@@ -1,20 +1,33 @@
-using Isu.Entities;
-using Isu.Models;
+// <copyright file="IIsuService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace Isu.Services;
+// Elements should be documented
+#pragma warning disable SA1600
 
-public interface IIsuService
+namespace Isu.Services
 {
-    Group AddGroup(GroupName name);
-    Student AddStudent(Group group, string name);
+    using Isu.Entities;
+    using Isu.Models;
 
-    Student GetStudent(int id);
-    Student? FindStudent(int id);
-    List<Student> FindStudents(GroupName groupName);
-    List<Student> FindStudents(CourseNumber courseNumber);
+    public interface IIsuService
+    {
+        Group AddGroup(GroupName name);
 
-    Group? FindGroup(GroupName groupName);
-    List<Group> FindGroups(CourseNumber courseNumber);
+        Student AddStudent(Group group, string name);
 
-    void ChangeStudentGroup(Student student, Group newGroup);
+        Student GetStudent(int id);
+
+        Student? FindStudent(int id);
+
+        List<Student> FindStudents(GroupName groupName);
+
+        List<Student> FindStudents(CourseNumber courseNumber);
+
+        Group? FindGroup(GroupName groupName);
+
+        List<Group> FindGroups(CourseNumber courseNumber);
+
+        void ChangeStudentGroup(Student student, Group newGroup);
+    }
 }
