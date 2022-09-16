@@ -61,10 +61,7 @@ namespace Isu.Services
             }
 
             List<Student> students = new List<Student>();
-            foreach (Group group in groups.Where(group => group.CourseNumber == courseNumber))
-            {
-                students.AddRange(group.Students);
-            }
+            students.AddRange(groups.SelectMany(g => g.Students));
 
             return students;
         }
