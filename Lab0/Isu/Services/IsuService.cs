@@ -94,7 +94,7 @@ namespace Isu.Services
         public void ChangeStudentGroup(Student student, Group newGroup)
         {
             // check if group to add in exists
-            if (_groups.Exists(g => g.GroupName.Name != newGroup.GroupName.Name))
+            if (!_groups.Exists( g => g.GroupName.Name != newGroup.GroupName.Name))
             {
                 throw new IsuException($"Group {newGroup.GroupName.Name} not found");
             }

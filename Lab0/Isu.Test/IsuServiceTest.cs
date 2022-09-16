@@ -94,8 +94,8 @@ namespace Isu.Test
         public void TransferStudentToAnotherGroup_GroupChanged()
         {
             IsuService isuService = new IsuService();
-            var group1 = isuService.AddGroup(new GroupName("M3201"));
-            var group2 = isuService.AddGroup(new GroupName("M3202"));
+            Group group1 = isuService.AddGroup(new GroupName("M3201"));
+            Group group2 = isuService.AddGroup(new GroupName("M3202"));
             Student student = isuService.AddStudent(group1, "a b c");
             isuService.AddStudent(group1, "d e f");  // add 2nd student to group1 to avoid exception
             isuService.ChangeStudentGroup(student, group2);
