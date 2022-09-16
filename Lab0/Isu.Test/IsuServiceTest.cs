@@ -53,7 +53,7 @@ namespace Isu.Test
             }
             catch (IsuException e)
             {
-                Assert.Equal($"Group {group.Name} is full", e.Message);
+                Assert.Equal($"Group {group.GroupName.Name} is full", e.Message);
             }
         }
 

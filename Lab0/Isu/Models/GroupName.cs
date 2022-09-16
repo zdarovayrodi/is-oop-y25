@@ -30,17 +30,14 @@ namespace Isu.Models
             }
 
             // correct letter
-            if (GroupName.AvailableLetters.Contains(name[0]))
-            {
-                this.Letter = name[0];
-            }
-            else
+            if (!GroupName.AvailableLetters.Contains(name[0]))
             {
                 throw new IsuException($"Unavailable letter - {name[0]}");
             }
 
+
             // correct courseNumber
-            this.CourseNumber = new CourseNumber(name[2]);
+            CourseNumber = new CourseNumber(name[2]);
 
             // correct groupNumber with last 2 letters
             if (!AvailableGroupNumbers.Contains(name[3]) || !AvailableGroupNumbers.Contains(name[4]))
@@ -48,15 +45,11 @@ namespace Isu.Models
                 throw new IsuException($"Unavailable group number - {name[3]}{name[4]}");
             }
 
-            this.GroupNumber = $"{name[3]}{name[4]}";
+            Name = name;
         }
 
-        public string Name => $"{this.Letter}3{this.CourseNumber.Number}{this.GroupNumber}";
+        public string Name { get; private set; }
 
         internal CourseNumber CourseNumber { get; private set; }
-
-        private char Letter { get; set; }
-
-        private string GroupNumber { get; set; }
     }
 }
