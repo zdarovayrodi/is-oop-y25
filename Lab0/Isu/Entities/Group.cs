@@ -11,21 +11,18 @@ namespace Isu.Entities
         public Group(GroupName groupName)
         {
             GroupName = groupName;
-            CourseNumber = GroupName.CourseNumber;
             Students = new List<Student>();
         }
 
         public GroupName GroupName { get; private set; }
 
-        public CourseNumber CourseNumber { get; private set; }
-
         public bool IsFull => Students.Count == MaxCapacity;
 
-        internal List<Student> Students { get; private set; }
+        public List<Student> Students { get; private set; }
 
         public void AddStudent(Student student)
         {
-            if (Students.Count > MaxCapacity)
+            if (IsFull)
             {
                 throw new IsuException($"Group {GroupName.Name} is full");
             }

@@ -11,24 +11,19 @@ namespace Isu.Models
 
     public class GroupName
     {
-        private const int MinGroupNameLength = 5;
+        private const int GroupNameLength = 5;
 
         private static readonly char[] AvailableLetters =
         {
             'A', 'B', 'C', 'D', 'F', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
         };
 
-        private static readonly char[] AvailableGroupNumbers =
-        {
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-        };
-
         public GroupName(string name)
         {
             // incorrect name
-            if (name.Length != MinGroupNameLength)
+            if (name.Length != GroupNameLength)
             {
-                throw new IsuException($"Group name must be {MinGroupNameLength} characters long");
+                throw new IsuException($"Group name must be {GroupNameLength} characters long");
             }
 
             // correct letter
@@ -37,20 +32,20 @@ namespace Isu.Models
                 throw new IsuException($"Unavailable letter - {name[0]}");
             }
 
-            // correct courseNumber
-            CourseNumber = new CourseNumber(name[2]);
-
             // correct groupNumber with last 2 letters
-            if (!AvailableGroupNumbers.Contains(name[3]) || !AvailableGroupNumbers.Contains(name[4]))
+            if (!char.IsDigit(name[3]) || !char.IsDigit(name[4]))
             {
                 throw new IsuException($"Unavailable group number - {name[3]}{name[4]}");
             }
+
+            // correct courseNumber
+            CourseNumber = new CourseNumber(name[2]);
 
             Name = name;
         }
 
         public string Name { get; private set; }
 
-        internal CourseNumber CourseNumber { get; private set; }
+        public CourseNumber CourseNumber { get; private set; }
     }
 }

@@ -20,8 +20,9 @@ namespace Isu.Services
                 throw new IsuException("Group already exists");
             }
 
-            _groups.Add(new Group(name));
-            return _groups.Last();
+            var newGroup = new Group(name);
+            _groups.Add(newGroup);
+            return newGroup;
         }
 
         public Student AddStudent(Group group, string name)
@@ -32,23 +33,15 @@ namespace Isu.Services
             return student;
         }
 
-        public Student GetStudent(int id)
-        {
-            Student? student = FindStudent(id);
-            return student ?? throw new IsuException("Student not found");
-        }
+        public Student GetStudent(int id) => _students.FirstOrDefault(s => s.Id == id) ?? throw new IsuException("Student not found");
 
-        public Student? FindStudent(int id)
-        {
-            return _students.FirstOrDefault(s => s.Id == id);
-        }
+        public Student? FindStudent(int id) => _students.FirstOrDefault(s => s.Id == id);
 
         public List<Student> FindStudents(GroupName groupName)
         {
             // find group by groupName
-            Group group = _groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name) ?? throw new IsuException("Group not found");
-
-            return group.Students;
+            Group? group = _groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name);
+            return group == null ? new List<Student>() : group.Students;
         }
 
         public List<Student> FindStudents(CourseNumber courseNumber)
@@ -78,12 +71,8 @@ namespace Isu.Services
                 throw new IsuException("No groups are created");
             }
 
-            List<Group> groups = _groups.Where(group => group.CourseNumber == courseNumber).ToList();
-
-            if (groups.Count == 0)
-            {
-                throw new IsuException("Groups not found");
-            }
+            List<Group> groups = new List<Group>();
+            groups.AddRange(_groups.Where(g => g.GroupName.CourseNumber == courseNumber));
 
             return groups;
         }
@@ -91,7 +80,7 @@ namespace Isu.Services
         public void ChangeStudentGroup(Student student, Group newGroup)
         {
             // check if group to add in exists
-            if (!_groups.Exists( g => g.GroupName.Name != newGroup.GroupName.Name))
+            if (!_groups.Exists(g => g.GroupName.Name != newGroup.GroupName.Name))
             {
                 throw new IsuException($"Group {newGroup.GroupName.Name} not found");
             }
