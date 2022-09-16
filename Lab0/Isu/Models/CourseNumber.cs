@@ -11,18 +11,16 @@ namespace Isu.Models
 
     public class CourseNumber
     {
-        private static char[] availableCourses = { '1', '2', '3', '4' };
+        private static readonly char[] AvailableCourses = { '1', '2', '3', '4' };
 
         public CourseNumber(char courseNumber)
         {
-            if (availableCourses.Contains(courseNumber))
-            {
-                this.Number = courseNumber;
-            }
-            else
+            if (!AvailableCourses.Contains(courseNumber))
             {
                 throw new IsuException($"Course number must be between 1 and 4");
             }
+
+            Number = courseNumber;
         }
 
         public char Number { get; private set; }
