@@ -48,11 +48,6 @@ namespace Isu.Services
         {
             List<Group> groups = FindGroups(courseNumber);
 
-            if (groups.Count == 0)
-            {
-                throw new IsuException($"Group with courseNumber {courseNumber} not found");
-            }
-
             List<Student> students = new List<Student>();
             students.AddRange(groups.SelectMany(g => g.Students));
 
