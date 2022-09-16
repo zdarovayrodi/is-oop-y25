@@ -20,7 +20,7 @@ namespace Isu.Services
         public Group AddGroup(GroupName name)
         {
             // check if its already exists
-            if (this.groups.Any(g => g.Name == name.Name))
+            if (this.groups.Any(g => g.GroupName.Name == name.Name))
             {
                 throw new IsuException("Group already exists");
             }
@@ -51,7 +51,7 @@ namespace Isu.Services
         public List<Student> FindStudents(GroupName groupName)
         {
             // find group by groupName
-            Group group = this.groups.FirstOrDefault(g => g.Name == groupName.Name) ?? throw new IsuException("Group not found");
+            Group group = this.groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name) ?? throw new IsuException("Group not found");
 
             if (group.Students.Count == 0)
             {
@@ -86,7 +86,7 @@ namespace Isu.Services
 
         public Group? FindGroup(GroupName groupName)
         {
-            return this.groups.FirstOrDefault(g => g.Name == groupName.Name);
+            return this.groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name);
         }
 
         public List<Group> FindGroups(CourseNumber courseNumber)
@@ -109,9 +109,9 @@ namespace Isu.Services
         public void ChangeStudentGroup(Student student, Group newGroup)
         {
             // check if group to add in exists
-            if (this.groups.All(g => g.Name != newGroup.Name))
+            if (this.groups.All(g => g.GroupName.Name != newGroup.GroupName.Name))
             {
-                throw new IsuException($"Group {newGroup.Name} not found");
+                throw new IsuException($"Group {newGroup.GroupName.Name} not found");
             }
 
             // find group where student is
@@ -121,7 +121,7 @@ namespace Isu.Services
             // check newGroup is not full
             if (newGroup.IsFull)
             {
-                throw new IsuException($"Group {newGroup.Name} is full");
+                throw new IsuException($"Group {newGroup.GroupName.Name} is full");
             }
 
             // remove student from old group (all checks are inside RemoveStudent func)

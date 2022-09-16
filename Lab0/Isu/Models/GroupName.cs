@@ -51,10 +51,7 @@ namespace Isu.Models
             this.GroupNumber = $"{name[3]}{name[4]}";
         }
 
-        internal string Name
-        {
-            get { return $"{this.Letter}3{this.CourseNumber.Number}{this.GroupNumber}"; }
-        }
+        public string Name => $"{this.Letter}3{this.CourseNumber.Number}{this.GroupNumber}";
 
         internal CourseNumber CourseNumber { get; private set; }
 
