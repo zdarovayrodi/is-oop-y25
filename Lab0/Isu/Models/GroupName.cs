@@ -11,6 +11,8 @@ namespace Isu.Models
 
     public class GroupName
     {
+        private const int MinGroupNameLength = 5;
+
         private static readonly char[] AvailableLetters =
         {
             'A', 'B', 'C', 'D', 'F', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -24,9 +26,9 @@ namespace Isu.Models
         public GroupName(string name)
         {
             // incorrect name
-            if (name.Length != 5)
+            if (name.Length != MinGroupNameLength)
             {
-                throw new IsuException("Group name must be 5 characters long");
+                throw new IsuException($"Group name must be {MinGroupNameLength} characters long");
             }
 
             // correct letter

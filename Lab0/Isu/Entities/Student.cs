@@ -13,7 +13,7 @@ namespace Isu.Entities
     {
         public Student(string name, int id)
         {
-            if (string.IsNullOrEmpty(name) || name.Split(' ').Length < 2)
+            if (string.IsNullOrEmpty(name))
             {
                 throw new IsuException("Invalid name");
             }

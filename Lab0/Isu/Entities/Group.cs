@@ -25,7 +25,7 @@ namespace Isu.Entities
 
         public void AddStudent(Student student)
         {
-            if (Students.Count > 30)
+            if (Students.Count > MaxCapacity)
             {
                 throw new IsuException($"Group {GroupName.Name} is full");
             }
