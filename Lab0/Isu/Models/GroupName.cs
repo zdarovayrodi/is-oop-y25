@@ -35,7 +35,6 @@ namespace Isu.Models
                 throw new IsuException($"Unavailable letter - {name[0]}");
             }
 
-
             // correct courseNumber
             CourseNumber = new CourseNumber(name[2]);
 
