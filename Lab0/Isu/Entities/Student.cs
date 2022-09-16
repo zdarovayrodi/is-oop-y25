@@ -7,7 +7,6 @@
 
 namespace Isu.Entities
 {
-    using Isu.Models;
     using Isu.Tools;
 
     public class Student
@@ -19,8 +18,8 @@ namespace Isu.Entities
                 throw new IsuException("Invalid name");
             }
 
-            this.Name = name;
-            this.Id = id;
+            Name = name;
+            Id = id;
         }
 
         public string Name { get; private set; }
