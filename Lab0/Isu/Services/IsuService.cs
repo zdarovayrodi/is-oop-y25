@@ -1,10 +1,5 @@
 // <copyright file="IsuService.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-
-// Elements should be documented
-#pragma warning disable SA1600
-
 namespace Isu.Services
 {
     using System.Linq;
@@ -14,56 +9,51 @@ namespace Isu.Services
 
     public class IsuService : IIsuService
     {
-        private List<Group> groups = new List<Group>();
-        private List<Student> students = new List<Student>();
+        private List<Group> _groups = new List<Group>();
+        private List<Student> _students = new List<Student>();
 
         public Group AddGroup(GroupName name)
         {
             // check if its already exists
-            if (this.groups.Any(g => g.GroupName.Name == name.Name))
+            if (_groups.Any(g => g.GroupName.Name == name.Name))
             {
                 throw new IsuException("Group already exists");
             }
 
-            this.groups.Add(new Group(name));
-            return this.groups.Last();
+            _groups.Add(new Group(name));
+            return _groups.Last();
         }
 
         public Student AddStudent(Group group, string name)
         {
-            var student = new Student(name, this.GetNextId());
-            this.students.Add(student);
+            var student = new Student(name, GetNextId());
+            _students.Add(student);
             group.AddStudent(student);
             return student;
         }
 
         public Student GetStudent(int id)
         {
-            var student = this.FindStudent(id);
+            Student? student = FindStudent(id);
             return student ?? throw new IsuException("Student not found");
         }
 
         public Student? FindStudent(int id)
         {
-            return this.students.FirstOrDefault(s => s.Id == id);
+            return _students.FirstOrDefault(s => s.Id == id);
         }
 
         public List<Student> FindStudents(GroupName groupName)
         {
             // find group by groupName
-            Group group = this.groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name) ?? throw new IsuException("Group not found");
-
-            if (group.Students.Count == 0)
-            {
-                throw new IsuException("Group is empty");
-            }
+            Group group = _groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name) ?? throw new IsuException("Group not found");
 
             return group.Students;
         }
 
         public List<Student> FindStudents(CourseNumber courseNumber)
         {
-            List<Group> groups = this.FindGroups(courseNumber);
+            List<Group> groups = FindGroups(courseNumber);
 
             if (groups.Count == 0)
             {
@@ -71,14 +61,9 @@ namespace Isu.Services
             }
 
             List<Student> students = new List<Student>();
-            foreach (var group in groups.Where(group => group.CourseNumber == courseNumber))
+            foreach (Group group in groups.Where(group => group.CourseNumber == courseNumber))
             {
                 students.AddRange(group.Students);
-            }
-
-            if (students.Count == 0)
-            {
-                throw new IsuException("Students not found");
             }
 
             return students;
@@ -86,17 +71,17 @@ namespace Isu.Services
 
         public Group? FindGroup(GroupName groupName)
         {
-            return this.groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name);
+            return _groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name);
         }
 
         public List<Group> FindGroups(CourseNumber courseNumber)
         {
-            if (this.groups.Count == 0)
+            if (_groups.Count == 0)
             {
                 throw new IsuException("No groups are created");
             }
 
-            List<Group> groups = this.groups.Where(group => group.CourseNumber == courseNumber).ToList();
+            List<Group> groups = _groups.Where(group => group.CourseNumber == courseNumber).ToList();
 
             if (groups.Count == 0)
             {
@@ -109,13 +94,13 @@ namespace Isu.Services
         public void ChangeStudentGroup(Student student, Group newGroup)
         {
             // check if group to add in exists
-            if (this.groups.All(g => g.GroupName.Name != newGroup.GroupName.Name))
+            if (_groups.Exists(g => g.GroupName.Name != newGroup.GroupName.Name))
             {
                 throw new IsuException($"Group {newGroup.GroupName.Name} not found");
             }
 
             // find group where student is
-            Group group = this.groups.FirstOrDefault(g => g.Students.Any(s => s.Id == student.Id))
+            Group group = _groups.FirstOrDefault(g => g.Students.Any(s => s.Id == student.Id))
                           ?? throw new IsuException($"Student {student.Name} {student.Id} not found");
 
             // check newGroup is not full
@@ -133,7 +118,7 @@ namespace Isu.Services
 
         private int GetNextId()
         {
-            return this.students.Count == 0 ? 1 : this.students.Max(g => g.Id) + 1;
+            return _students.Count == 0 ? 1 : _students.Max(g => g.Id) + 1;
         }
     }
 }

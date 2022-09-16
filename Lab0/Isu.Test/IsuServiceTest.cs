@@ -15,7 +15,6 @@ namespace Isu.Test
             Assert.Equal("a b c", student.Name);
         }
 
-
         [Fact]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
