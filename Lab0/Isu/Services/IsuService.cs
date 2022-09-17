@@ -12,6 +12,8 @@ namespace Isu.Services
         private List<Group> _groups = new List<Group>();
         private List<Student> _students = new List<Student>();
 
+        private StudentID nextId = new StudentID();
+
         public Group AddGroup(GroupName name)
         {
             // check if its already exists
@@ -27,7 +29,7 @@ namespace Isu.Services
 
         public Student AddStudent(Group group, string name)
         {
-            var student = new Student(name, GetNextId());
+            var student = new Student(name, nextId.NextId);
             _students.Add(student);
             group.AddStudent(student);
             return student;
@@ -87,7 +89,5 @@ namespace Isu.Services
             // add student to new group
             newGroup.AddStudent(student);
         }
-
-        private int GetNextId() => StudentID.NextID();
-        }
+    }
 }

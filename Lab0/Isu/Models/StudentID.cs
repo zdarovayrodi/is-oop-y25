@@ -1,14 +1,8 @@
 namespace Isu.Models
 {
-    public static class StudentID
+    public class StudentID
     {
-        private static List<int> _studentIDs = new List<int>();
-
-        public static int NextID()
-        {
-            int nextId = _studentIDs.Count + 1;
-            _studentIDs.Add(nextId);
-            return nextId;
-        }
+        private static int id = 0;
+        public int NextId => id++;
     }
 }
