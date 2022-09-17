@@ -12,7 +12,7 @@ namespace Isu.Services
         private List<Group> _groups = new List<Group>();
         private List<Student> _students = new List<Student>();
 
-        private StudentID nextId = new StudentID();
+        private IdFactory _student_id = new IdFactory();
 
         public Group AddGroup(GroupName name)
         {
@@ -29,7 +29,7 @@ namespace Isu.Services
 
         public Student AddStudent(Group group, string name)
         {
-            var student = new Student(name, nextId.NextId);
+            var student = new Student(name, _student_id.NextId);
             _students.Add(student);
             group.AddStudent(student);
             return student;
