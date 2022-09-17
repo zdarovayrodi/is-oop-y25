@@ -33,39 +33,30 @@ namespace Isu.Services
             return student;
         }
 
-        public Student GetStudent(int id) => _students.FirstOrDefault(s => s.Id == id) ?? throw new IsuException("Student not found");
+        public Student GetStudent(int id) => FindStudent(id) ?? throw new IsuException("Student not found");
 
         public Student? FindStudent(int id) => _students.FirstOrDefault(s => s.Id == id);
 
         public List<Student> FindStudents(GroupName groupName)
         {
             // find group by groupName
-            Group? group = _groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name);
-            return group == null ? new List<Student>() : group.Students;
+            Group? group = FindGroup(groupName);
+            return group?.Students ?? new List<Student>();
         }
 
         public List<Student> FindStudents(CourseNumber courseNumber)
         {
             List<Group> groups = FindGroups(courseNumber);
-
             List<Student> students = new List<Student>();
             students.AddRange(groups.SelectMany(g => g.Students));
 
             return students;
         }
 
-        public Group? FindGroup(GroupName groupName)
-        {
-            return _groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name);
-        }
+        public Group? FindGroup(GroupName groupName) => _groups.FirstOrDefault(g => g.GroupName.Name == groupName.Name);
 
         public List<Group> FindGroups(CourseNumber courseNumber)
         {
-            if (_groups.Count == 0)
-            {
-                throw new IsuException("No groups are created");
-            }
-
             List<Group> groups = new List<Group>();
             groups.AddRange(_groups.Where(g => g.GroupName.CourseNumber == courseNumber));
 
@@ -97,9 +88,6 @@ namespace Isu.Services
             newGroup.AddStudent(student);
         }
 
-        private int GetNextId()
-        {
-            return _students.Count == 0 ? 1 : _students.Max(g => g.Id) + 1;
+        private int GetNextId() => StudentID.NextID();
         }
-    }
 }
