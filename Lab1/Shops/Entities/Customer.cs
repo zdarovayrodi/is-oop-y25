@@ -4,20 +4,56 @@ namespace Shops.Entities
 {
     public class Customer
     {
-        public Customer(string name, int money)
-        {
-            if (money < 0)
-            {
-                throw new CustomerException($"Money ({money}) cannot be negative");
-            }
+        private decimal _money;
+        private string _name = string.Empty;
 
-            Name = name;
+        public Customer(string name, decimal money)
+        {
             Money = money;
+            Name = name;
         }
 
-        public string Name { get; private set; }
-        public int Money { get; private set; }
+        public string Name
+        {
+            get => _name;
+            private set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new CustomerException("Name cannot be empty");
+                }
 
-        public void AddMoney(int money) => Money += money;
+                _name = value;
+            }
+        }
+
+        public decimal Money
+        {
+            get => _money;
+            private set
+            {
+                if (value < 0)
+                {
+                    throw new CustomerException("Money cannot be negative");
+                }
+
+                _money = value;
+            }
+        }
+
+        public void AddMoney(decimal money)
+        {
+            Money += money;
+        }
+
+        public void SubstractMoney(decimal money)
+        {
+            if (Money - money < 0)
+            {
+                throw new CustomerException("Customer doesn't have enough money");
+            }
+
+            Money -= money;
+        }
     }
 }
