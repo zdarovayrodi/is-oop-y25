@@ -4,23 +4,19 @@ namespace Shops.Models;
 
 public class ProductInfo
 {
-    private decimal _price;
-
     public ProductInfo(decimal price, uint quantity)
     {
-        Price = price;
+        Price = new ProductPrice(price);
         Quantity = quantity;
     }
 
-    public uint Quantity { get; set; }
-    public decimal Price
-    {
-        get => _price;
+    public uint Quantity { get; private set; }
 
-        set
-        {
-            if (value < 0) throw new ProductException("Price cannot be negative.");
-            _price = value;
-        }
-    }
+    public ProductPrice Price { get; private set; }
+
+    public void AddQuantity(uint quantity) => Quantity += quantity;
+
+    public void RemoveQuantity(uint quantity) => Quantity -= quantity;
+
+    public void ChangePrice(decimal newPrice) => Price = new ProductPrice(newPrice);
 }
