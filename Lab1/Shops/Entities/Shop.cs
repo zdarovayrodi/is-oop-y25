@@ -1,8 +1,7 @@
-using Shops.Tools;
-
 namespace Shops.Entities
 {
     using Shops.Models;
+    using Shops.Tools;
 
     public class Shop
     {
@@ -31,52 +30,54 @@ namespace Shops.Entities
 
         public Dictionary<Product, ProductInfo> Products { get; private set; } = new Dictionary<Product, ProductInfo>();
 
-        public void AddProduct(Product product, decimal price, uint quantity)
+        public void AddProduct(CartItem item, decimal price)
         {
-            if (ContainsProduct(product))
+            if (ContainsProduct(item.Product))
             {
-                Products[product].Quantity += quantity;
-                Products[product].Price = price;
+                Products[item.Product].AddQuantity(item.Quantity);
+                Products[item.Product].ChangePrice(price);
                 return;
             }
 
-            var productInfo = new ProductInfo(price, quantity);
-            Products.Add(product, productInfo);
+            var productInfo = new ProductInfo(price, item.Quantity);
+            Products.Add(item.Product, productInfo);
         }
 
-        public void BuyProduct(Product product, uint quantity)
+        public void BuyProduct(CartItem cartItem)
         {
-            if (!ContainsProduct(product))
+            if (!ContainsProduct(cartItem.Product))
             {
                 throw new ShopException("Product not found");
             }
 
-            if (Products[product].Quantity < quantity)
+            if (Products[cartItem.Product].Quantity < cartItem.Quantity)
             {
                 throw new ShopException("Not enough products in stock");
             }
 
-            Products[product].Quantity -= quantity;
-            ShopBalance += Products[product].Price * quantity;
+            Products[cartItem.Product].RemoveQuantity(cartItem.Quantity);
+            ShopBalance += Products[cartItem.Product].Price.Value * cartItem.Quantity;
         }
 
-        public void BuyProducts(Dictionary<Product, uint> productList)
+        public void BuyProducts(List<CartItem> cartItems)
         {
-            foreach (var product in productList)
+            decimal totalCost = 0;
+            foreach (CartItem cartItem in cartItems)
             {
-                if (!ContainsProduct(product.Key))
+                if (!ContainsProduct(cartItem.Product) || (Products[cartItem.Product].Quantity < cartItem.Quantity))
                 {
-                    throw new ShopException("Product not found");
+                    throw new ShopException("Product not found or not enough products in stock");
                 }
 
-                if (Products[product.Key].Quantity < product.Value)
-                {
-                    throw new ShopException("Not enough products in stock");
-                }
+                totalCost += Products[cartItem.Product].Price.Value * cartItem.Quantity;
             }
 
-            decimal totalPrice = productList.Sum(product => Products[product.Key].Price * product.Value);
-            ShopBalance += totalPrice;
+            foreach (CartItem cartItem in cartItems)
+            {
+                Products[cartItem.Product].RemoveQuantity(cartItem.Quantity);
+            }
+
+            ShopBalance += totalCost;
         }
 
         public void DeleteProduct(Product product)
@@ -96,7 +97,7 @@ namespace Shops.Entities
                 throw new ShopException("Product not found");
             }
 
-            Products[product].Price = newPrice;
+            Products[product].ChangePrice(newPrice);
         }
 
         public bool ContainsProduct(Product product) => Products.ContainsKey(product);

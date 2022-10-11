@@ -11,31 +11,30 @@ namespace Shops.Services
 
         public Shop AddShop(string shopName, string address)
         {
-            var shopId = Guid.NewGuid();
-            var shop = new Shop(shopName, shopId, address);
+            var shop = new Shop(shopName, address);
             _shopList.Add(shop);
             return shop;
         }
 
-        public void BuyProduct(Shop shop, Customer customer, Product product, uint quantity)
+        public void BuyProduct(Shop shop, Customer customer, CartItem cartItem)
         {
-            if (!shop.ContainsProduct(product))
+            if (!shop.ContainsProduct(cartItem.Product))
             {
                 throw new ShopException("Product is not in shop");
             }
 
-            if (shop.Products[product].Quantity < quantity || quantity == 0)
+            if (shop.Products[cartItem.Product].Quantity < cartItem.Quantity || cartItem.Quantity == 0)
             {
                 throw new ShopException("Not enough products in stock");
             }
 
-            decimal totalCost = shop.Products[product].Price * quantity;
+            decimal totalCost = shop.Products[cartItem.Product].Price.Value * cartItem.Quantity;
 
             customer.SubstractMoney(totalCost);
-            shop.BuyProduct(product, quantity);
+            shop.BuyProduct(cartItem);
         }
 
-        public void BuyProducts(Shop shop, Customer customer, Dictionary<Product, uint> products)
+        public void BuyProducts(Shop shop, Customer customer, List<CartItem> products)
         {
             decimal totalPrice = CalculatePrice(shop, products);
             if (customer.Money < totalPrice)
@@ -47,16 +46,16 @@ namespace Shops.Services
             customer.SubstractMoney(totalPrice);
         }
 
-        public void CreateDelivery(Shop shop, Dictionary<Product, (decimal, uint)> products)
+        public void CreateDelivery(Shop shop, Dictionary<Product, ProductInfo> products)
         {
             if (!ShopExists(shop))
             {
                 throw new ShopException("Shop does not exist");
             }
 
-            foreach (var product in products)
+            foreach (KeyValuePair<Product, ProductInfo> product in products)
             {
-                shop.AddProduct(product.Key, product.Value.Item1, product.Value.Item2);
+                shop.AddProduct(new CartItem(product.Key, product.Value.Quantity), product.Value.Price.Value);
             }
         }
 
@@ -70,37 +69,45 @@ namespace Shops.Services
             shop.ChangePrice(product, newPrice);
         }
 
-        public Shop SearchBestPrice(Product product, uint quantity)
+        public Shop SearchBestPrice(List<CartItem> cartItems)
         {
             Shop? bestShop = null;
             decimal bestPrice = decimal.MaxValue;
 
-            foreach (var shop in _shopList.Where(shop => shop.ContainsProduct(product) &&
-                     shop.Products[product].Quantity >= quantity).Where(shop => shop.Products[product].Price < bestPrice))
+            foreach (Shop shop in _shopList)
             {
-                bestPrice = shop.Products[product].Price;
-                bestShop = shop;
+                try
+                {
+                    decimal price = CalculatePrice(shop, cartItems);
+                    if (price >= bestPrice) continue;
+                    bestPrice = price;
+                    bestShop = shop;
+                }
+                catch (ShopException)
+                {
+                    continue;
+                }
             }
 
-            return bestShop ?? throw new ShopException("No shop has this product");
+            return bestShop ?? throw new ShopException("No shop found for your purchase");
         }
 
-        private decimal CalculatePrice(Shop shop, Dictionary<Product, uint> products)
+        private decimal CalculatePrice(Shop shop, List<CartItem> products)
         {
             decimal price = 0;
             foreach (var product in products)
             {
-                if (!shop.ContainsProduct(product.Key))
+                if (!shop.ContainsProduct(product.Product))
                 {
                     throw new ShopException("Product is not in shop");
                 }
 
-                if (shop.Products[product.Key].Quantity < product.Value)
+                if (shop.Products[product.Product].Quantity < product.Quantity || product.Quantity == 0)
                 {
                     throw new ShopException("Not enough products in stock");
                 }
 
-                price += shop.Products[product.Key].Price * product.Value;
+                price += shop.Products[product.Product].Price.Value * product.Quantity;
             }
 
             return price;
