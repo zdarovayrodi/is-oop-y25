@@ -1,3 +1,5 @@
+using Shops.Models;
+
 namespace Shops.Test
 {
     using Shops.Entities;
@@ -18,19 +20,19 @@ namespace Shops.Test
             var product4 = new Product("TestProduct4");
             var customer = new Customer("Test Customer", 600);
 
-            shopService.CreateDelivery(shop, new Dictionary<Product, (decimal, uint)>
+            shopService.CreateDelivery(shop, new Dictionary<Product, ProductInfo>
             {
-                { product1, (100, 1) },
-                { product2, (200, 2) },
-                { product3, (300, 3) },
+                { product1, new ProductInfo(100, 1) },
+                { product2, new ProductInfo(200, 2) },
+                { product3, new ProductInfo(300, 3) },
             });
 
-            shopService.BuyProduct(shop, customer, product1, 1);
-            shopService.BuyProduct(shop, customer, product2, 2);
+            shopService.BuyProduct(shop, customer, new CartItem(product1));
+            shopService.BuyProduct(shop, customer, new CartItem(product2, 2));
 
-            Assert.Throws<CustomerException>(() => shopService.BuyProduct(shop, customer, product3, 1));
-            Assert.Throws<ShopException>(() => shopService.BuyProduct(shop, customer, product4, 1));
-            Assert.Throws<ShopException>(() => shopService.BuyProduct(shop, customer, product4, 100));
+            Assert.Throws<CustomerException>(() => shopService.BuyProduct(shop, customer, new CartItem(product3)));
+            Assert.Throws<ShopException>(() => shopService.BuyProduct(shop, customer, new CartItem(product4)));
+            Assert.Throws<ShopException>(() => shopService.BuyProduct(shop, customer, new CartItem(product4, 100)));
             Assert.Equal(100, customer.Money);
             Assert.Equal(500, shop.ShopBalance);
         }
@@ -46,11 +48,11 @@ namespace Shops.Test
             var product3 = new Product("TestProduct3");
             var product4 = new Product("TestProduct4");
 
-            shopService.CreateDelivery(shop, new Dictionary<Product, (decimal, uint)>
+            shopService.CreateDelivery(shop, new Dictionary<Product, ProductInfo>
             {
-                { product1, (100, 1) },
-                { product2, (200, 2) },
-                { product3, (300, 3) },
+                { product1, new ProductInfo(100, 1) },
+                { product2, new ProductInfo(200, 2) },
+                { product3, new ProductInfo(300, 3) },
             });
 
             shopService.ChangePrice(shop, product1, 199);
@@ -59,9 +61,9 @@ namespace Shops.Test
             shopService.ChangePrice(shop, product3, 499);
 
             Assert.Throws<ShopException>(() => shopService.ChangePrice(shop, product4, 599));
-            Assert.Equal(299, shop.Products[product1].Price);
-            Assert.Equal(399, shop.Products[product2].Price);
-            Assert.Equal(499, shop.Products[product3].Price);
+            Assert.Equal(299, shop.Products[product1].Price.Value);
+            Assert.Equal(399, shop.Products[product2].Price.Value);
+            Assert.Equal(499, shop.Products[product3].Price.Value);
         }
 
         [Fact]
@@ -77,30 +79,32 @@ namespace Shops.Test
             var product3 = new Product("TestProduct3");
             var product4 = new Product("TestProduct4");
 
-            shopService.CreateDelivery(shop1, new Dictionary<Product, (decimal, uint)>
+            shopService.CreateDelivery(shop1, new Dictionary<Product, ProductInfo>
             {
-                { product1, (100, 1) },
-                { product2, (200, 2) },
-                { product3, (300, 3) },
+                { product1, new ProductInfo(100, 1) },
+                { product2, new ProductInfo(200, 2) },
+                { product3, new ProductInfo(300, 3) },
             });
 
-            shopService.CreateDelivery(shop2, new Dictionary<Product, (decimal, uint)>
+            shopService.CreateDelivery(shop2, new Dictionary<Product, ProductInfo>
             {
-                { product1, (200, 1) },
-                { product2, (300, 2) },
-                { product3, (400, 3) },
+                { product1, new ProductInfo(200, 1) },
+                { product2, new ProductInfo(300, 2) },
+                { product3, new ProductInfo(400, 3) },
             });
 
-            shopService.CreateDelivery(shop3, new Dictionary<Product, (decimal, uint)>
+            shopService.CreateDelivery(shop3, new Dictionary<Product, ProductInfo>
             {
-                { product1, (10, 10) },
-                { product2, (20, 2) },
-                { product3, (30, 3) },
+                { product1, new ProductInfo(10, 10) },
+                { product2, new ProductInfo(20, 2) },
+                { product3, new ProductInfo(30, 3) },
             });
 
-            Shop bestShop = shopService.SearchBestPrice(product1, 5);
+            Shop bestShop = shopService.SearchBestPrice(new List<CartItem>
+                { new CartItem(product1, 5) });
 
-            Assert.Throws<ShopException>(() => shopService.SearchBestPrice(product4, 100));
+            Assert.Throws<ShopException>(() => shopService.SearchBestPrice(new List<CartItem>
+                { new CartItem(product4, 100) }));
             Assert.Equal(shop3, bestShop);
         }
 
@@ -116,17 +120,17 @@ namespace Shops.Test
             var product3 = new Product("TestProduct3");
             var product4 = new Product("TestProduct4");
 
-            shopService.CreateDelivery(shop1, new Dictionary<Product, (decimal, uint)>
+            shopService.CreateDelivery(shop1, new Dictionary<Product, ProductInfo>
             {
-                { product1, (100, 1) },
-                { product2, (200, 2) },
-                { product3, (300, 3) },
+                { product1, new ProductInfo(100, 1) },
+                { product2, new ProductInfo(200, 2) },
+                { product3, new ProductInfo(300, 3) },
             });
-            shopService.BuyProducts(shop1, customer, new Dictionary<Product, uint>
+            shopService.BuyProducts(shop1, customer, new List<CartItem>
             {
-                { product1, 1 },
-                { product2, 1 },
-                { product3, 1 },
+                new CartItem(product1),
+                new CartItem(product2),
+                new CartItem(product3),
             });
 
             Assert.Equal(0, customer.Money);
@@ -134,12 +138,12 @@ namespace Shops.Test
 
             customer.AddMoney(600);
 
-            Assert.Throws<ShopException>(() => shopService.BuyProducts(shop1, customer, new Dictionary<Product, uint>
+            Assert.Throws<ShopException>(() => shopService.BuyProducts(shop1, customer, new List<CartItem>
             {
-                { product1, 1 },
-                { product2, 1 },
-                { product3, 1 },
-                { product4, 1 },
+                new CartItem(product1),
+                new CartItem(product2),
+                new CartItem(product3),
+                new CartItem(product4),
             }));
             Assert.Equal(600, customer.Money);
         }
