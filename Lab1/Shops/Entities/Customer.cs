@@ -5,27 +5,19 @@ namespace Shops.Entities
     public class Customer
     {
         private decimal _money;
-        private string _name = string.Empty;
 
         public Customer(string name, decimal money)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new CustomerException("Name cannot be empty");
+            }
+
             Money = money;
             Name = name;
         }
 
-        public string Name
-        {
-            get => _name;
-            private set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new CustomerException("Name cannot be empty");
-                }
-
-                _name = value;
-            }
-        }
+        public string Name { get; private set; }
 
         public decimal Money
         {
@@ -43,14 +35,19 @@ namespace Shops.Entities
 
         public void AddMoney(decimal money)
         {
+            if (money <= 0)
+            {
+                throw new CustomerException("Wrong argument");
+            }
+
             Money += money;
         }
 
         public void SubstractMoney(decimal money)
         {
-            if (Money - money < 0)
+            if (money <= 0)
             {
-                throw new CustomerException("Customer doesn't have enough money");
+                throw new CustomerException("Wrong argument");
             }
 
             Money -= money;
