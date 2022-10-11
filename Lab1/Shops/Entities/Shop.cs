@@ -6,9 +6,9 @@ namespace Shops.Entities
 
     public class Shop
     {
-        public Shop(string shopName, Guid shopId, string address)
+        public Shop(string shopName, string address)
         {
-            if (string.IsNullOrEmpty(shopName))
+            if (shopName == string.Empty || string.IsNullOrWhiteSpace(shopName))
             {
                 throw new ShopException("Shop name cannot be null or empty");
             }
@@ -19,17 +19,16 @@ namespace Shops.Entities
             }
 
             ShopName = shopName;
-            ShopId = shopId;
             ShopAddress = address;
+            ShopId = Guid.NewGuid();
         }
 
         public string ShopName { get; private set; }
-        public Guid ShopId { get; private set; }
-        public string ShopAddress { get; private set; }
+        public Guid ShopId { get; private init; }
+        public string ShopAddress { get; private init; }
 
         public decimal ShopBalance { get; private set; } = 0;
 
-        // (product : (price, quantity))
         public Dictionary<Product, ProductInfo> Products { get; private set; } = new Dictionary<Product, ProductInfo>();
 
         public void AddProduct(Product product, decimal price, uint quantity)
@@ -63,7 +62,6 @@ namespace Shops.Entities
 
         public void BuyProducts(Dictionary<Product, uint> productList)
         {
-            // all products are available
             foreach (var product in productList)
             {
                 if (!ContainsProduct(product.Key))
