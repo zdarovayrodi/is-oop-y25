@@ -7,7 +7,7 @@ namespace Shops.Entities
     {
         public Shop(string shopName, string address)
         {
-            if (shopName == string.Empty || string.IsNullOrWhiteSpace(shopName))
+            if (string.IsNullOrWhiteSpace(shopName))
             {
                 throw new ShopException("Shop name cannot be null or empty");
             }
