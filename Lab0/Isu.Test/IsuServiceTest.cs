@@ -19,9 +19,9 @@ namespace Isu.Test
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
         {
             IsuService isuService = new IsuService();
-            Student student = new Student("a b c", 1);
             var group = isuService.AddGroup(new GroupName("M3201"));
             isuService.AddStudent(group, "a b c");
+            isuService.AddStudent(group, "d e f");
             try
             {
                 isuService.AddStudent(group, "a b c");
