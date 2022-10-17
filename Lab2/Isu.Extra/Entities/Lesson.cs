@@ -1,12 +1,32 @@
 namespace Isu.Extra.Entities
 {
+    using Isu.Extra.Exceptions;
     using Isu.Models;
 
     public class Lesson
     {
         public Lesson(string name, DateTime startTime, GroupName group, string teacher, uint room)
         {
-            // TODO: check arguments
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new LessonException("Name cannot be null or empty");
+            }
+
+            if (startTime < DateTime.Now)
+            {
+                throw new LessonException("Start time cannot be in the past");
+            }
+
+            if (group == null)
+            {
+                throw new LessonException("Group cannot be null");
+            }
+
+            if (string.IsNullOrWhiteSpace(teacher))
+            {
+                throw new LessonException("Teacher cannot be null or empty");
+            }
+
             StartTime = startTime;
             EndTime = startTime.AddMinutes(90);
             Name = name;
@@ -14,10 +34,10 @@ namespace Isu.Extra.Entities
             Room = room;
         }
 
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private init; }
-        public string Name { get; init; }
-        public string Teacher { get; private set; }
-        public uint Room { get; private set; }
+        public DateTime StartTime { get; }
+        public DateTime EndTime { get; }
+        public string Name { get; }
+        public string Teacher { get; }
+        public uint Room { get; }
     }
 }
