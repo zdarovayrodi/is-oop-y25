@@ -5,16 +5,27 @@ namespace Isu.Extra.Entities
 
     public class Lesson
     {
-        public Lesson(string name, DateTime startTime, GroupName group, string teacher, uint room)
+        public enum Week
+        {
+            Odd,
+            Even,
+        }
+
+        public enum Day
+        {
+            Monday,
+            Tuesday,
+            Wednesday,
+            Thursday,
+            Friday,
+            Saturday,
+        }
+
+        public Lesson(string name, Week week, Day day, GroupName group, string teacher, uint room)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new LessonException("Name cannot be null or empty");
-            }
-
-            if (startTime < DateTime.Now)
-            {
-                throw new LessonException("Start time cannot be in the past");
             }
 
             if (group == null)
@@ -27,17 +38,20 @@ namespace Isu.Extra.Entities
                 throw new LessonException("Teacher cannot be null or empty");
             }
 
-            StartTime = startTime;
-            EndTime = startTime.AddMinutes(90);
             Name = name;
+            LessonDay = day;
+            Group = group;
+            LessonWeek = week;
             Teacher = teacher;
             Room = room;
         }
 
+        public Week LessonWeek { get; }
+        public Day LessonDay { get; }
         public DateTime StartTime { get; }
-        public DateTime EndTime { get; }
         public string Name { get; }
         public string Teacher { get; }
         public uint Room { get; }
+        public GroupName Group { get; }
     }
 }
