@@ -5,22 +5,6 @@ namespace Isu.Extra.Entities
 
     public class Lesson
     {
-        public enum Week
-        {
-            Odd,
-            Even,
-        }
-
-        public enum Day
-        {
-            Monday,
-            Tuesday,
-            Wednesday,
-            Thursday,
-            Friday,
-            Saturday,
-        }
-
         public Lesson(string name, Week week, Day day, TimeOnly startTime, GroupName group, string teacher, uint room)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -45,6 +29,22 @@ namespace Isu.Extra.Entities
             Teacher = teacher;
             Room = room;
             StartTime = startTime;
+        }
+
+        public enum Week
+        {
+            Odd,
+            Even,
+        }
+
+        public enum Day
+        {
+            Monday,
+            Tuesday,
+            Wednesday,
+            Thursday,
+            Friday,
+            Saturday,
         }
 
         public Week LessonWeek { get; }
