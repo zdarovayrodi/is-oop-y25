@@ -28,9 +28,9 @@ namespace Isu.Extra.Entities
                 throw new NewGroupException("Lesson can't be null");
             }
 
-            if (_lessons.Any(l => l.StartTime == lesson.StartTime))
+            if (_lessons.Any(l => l.StartTime == lesson.StartTime || l.StartTime.AddMinutes(90) > lesson.StartTime))
             {
-                throw new NewGroupException("Lesson on this time already exists");
+                throw new NewGroupException("Lesson can't be added because it starts at the same time as existing lesson");
             }
 
             _lessons.Add(lesson);

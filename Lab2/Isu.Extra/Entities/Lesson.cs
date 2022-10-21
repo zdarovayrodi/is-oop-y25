@@ -21,7 +21,7 @@ namespace Isu.Extra.Entities
             Saturday,
         }
 
-        public Lesson(string name, Week week, Day day, GroupName group, string teacher, uint room)
+        public Lesson(string name, Week week, Day day, TimeOnly startTime, GroupName group, string teacher, uint room)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -44,11 +44,12 @@ namespace Isu.Extra.Entities
             LessonWeek = week;
             Teacher = teacher;
             Room = room;
+            StartTime = startTime;
         }
 
         public Week LessonWeek { get; }
         public Day LessonDay { get; }
-        public DateTime StartTime { get; }
+        public TimeOnly StartTime { get; }
         public string Name { get; }
         public string Teacher { get; }
         public uint Room { get; }
