@@ -17,10 +17,6 @@ namespace Isu.Extra.Services
         private IdFactory _studentIdFactory = new IdFactory();
         private IdFactory _streamIdFactory = new IdFactory();
 
-        public IsuExtraService()
-        {
-        }
-
         public IReadOnlyList<OgnpCourse> OgnpCourses => _ognpCourses;
 
         public NewGroup AddGroup(GroupName name)

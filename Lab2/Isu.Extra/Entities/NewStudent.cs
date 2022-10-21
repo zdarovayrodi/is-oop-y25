@@ -9,20 +9,18 @@ namespace Isu.Extra.Entities
     {
         private const int MaxOgnpCourses = 2;
 
-        private NewGroup _newGroup;
         private List<OgnpCourse> _ognpCourses = new List<OgnpCourse>();
-        private Faculty _faculty;
 
         public NewStudent(string name, int id, NewGroup group)
             : base(name, id)
         {
-            _newGroup = group;
-            _faculty = new Faculty(group.GroupName);
+            Group = group;
+            Faculty = new Faculty(group.GroupName);
         }
 
-        public NewGroup Group => _newGroup;
-        public Faculty Faculty => _faculty;
-        public IReadOnlyList<OgnpCourse> OgnpCourse => _ognpCourses;
+        public NewGroup Group { get; }
+        public Faculty Faculty { get; }
+        public IReadOnlyList<OgnpCourse> OgnpCourse => _ognpCourses.AsReadOnly();
 
         public void AddOgnpCourse(OgnpCourse course)
         {

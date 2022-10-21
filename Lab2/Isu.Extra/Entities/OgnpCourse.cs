@@ -6,16 +6,15 @@ namespace Isu.Extra.Entities
 
     public class OgnpCourse
     {
-        private Faculty _faculty;
         private List<Stream> _streams = new List<Stream>();
 
         public OgnpCourse(Faculty faculty)
         {
-            _faculty = faculty;
+            Faculty = faculty;
         }
 
-        public Faculty Faculty => _faculty;
-        public IReadOnlyList<Stream> Streams => _streams;
+        public Faculty Faculty { get; }
+        public IReadOnlyList<Stream> Streams => _streams.AsReadOnly();
 
         public void AddStream(Stream stream) => _streams.Add(stream);
 
