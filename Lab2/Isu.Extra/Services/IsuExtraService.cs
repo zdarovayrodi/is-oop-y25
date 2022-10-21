@@ -1,7 +1,6 @@
-using System.Security.Principal;
-
 namespace Isu.Extra.Services
 {
+    using System.Security.Principal;
     using Isu.Entities;
     using Isu.Extra.Entities;
     using Isu.Extra.Exceptions;
