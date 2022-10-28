@@ -5,7 +5,7 @@ namespace Isu.Extra.Entities
     public class Stream
     {
         private const int MaxStudents = 30;
-        private List<NewStudent> _students = new List<NewStudent>();
+        private List<ExtraStudent> _students = new List<ExtraStudent>();
         private List<Lesson> _lessons = new List<Lesson>();
         private int _streamId;
 
@@ -14,10 +14,10 @@ namespace Isu.Extra.Entities
             _streamId = streamId;
         }
 
-        public IReadOnlyList<NewStudent> Students => _students;
+        public IReadOnlyList<ExtraStudent> Students => _students;
         public IReadOnlyList<Lesson> Lessons => _lessons;
 
-        public void AddStudent(NewStudent student)
+        public void AddStudent(ExtraStudent student)
         {
             if (_students.Count >= MaxStudents)
             {
@@ -27,7 +27,7 @@ namespace Isu.Extra.Entities
             _students.Add(student);
         }
 
-        public void RemoveStudent(NewStudent student)
+        public void RemoveStudent(ExtraStudent student)
         {
             if (!_students.Contains(student))
             {

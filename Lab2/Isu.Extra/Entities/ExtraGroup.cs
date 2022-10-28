@@ -6,13 +6,13 @@ namespace Isu.Extra.Entities
     using Isu.Entities;
     using Isu.Models;
 
-    public class NewGroup : Group
+    public class ExtraGroup : Group
     {
         private const int MaxStudents = 30;
         private List<Lesson> _lessons = new List<Lesson>();
-        private List<NewStudent> _students = new List<NewStudent>();
+        private List<ExtraStudent> _students = new List<ExtraStudent>();
 
-        public NewGroup(GroupName groupName)
+        public ExtraGroup(GroupName groupName)
             : base(groupName)
         {
             Faculty = new Faculty(groupName);
@@ -36,7 +36,7 @@ namespace Isu.Extra.Entities
             _lessons.Add(lesson);
         }
 
-        public void AddStudent(NewStudent student)
+        public void AddStudent(ExtraStudent student)
         {
             if (student == null)
             {

@@ -7,14 +7,14 @@ namespace Isu.Extra.Services
 
     public interface IIsuExtraService
     {
-        NewGroup AddGroup(GroupName name);
+        ExtraGroup AddGroup(GroupName name);
 
-        NewStudent AddStudent(NewGroup group, string name);
+        ExtraStudent AddStudent(ExtraGroup group, string name);
 
         OgnpCourse AddOgnpCourse(Faculty faculty);
 
         Stream AddOgnpCourseStream(OgnpCourse course);
 
-        void RegisterOnOgnpCourse(NewStudent student, OgnpCourse course, Stream stream);
+        void RegisterOnOgnpCourse(ExtraStudent student, OgnpCourse course, Stream stream);
     }
 }

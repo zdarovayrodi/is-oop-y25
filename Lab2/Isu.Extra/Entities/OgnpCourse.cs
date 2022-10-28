@@ -18,7 +18,7 @@ namespace Isu.Extra.Entities
 
         public void AddStream(Stream stream) => _streams.Add(stream);
 
-        public void AddStudent(NewStudent student, Stream stream)
+        public void AddStudent(ExtraStudent student, Stream stream)
         {
             if (student == null || stream == null)
                 throw new OgnpException("Student or stream is null");
@@ -31,7 +31,7 @@ namespace Isu.Extra.Entities
             stream.AddStudent(student);
         }
 
-        public void RemoveStudent(NewStudent student)
+        public void RemoveStudent(ExtraStudent student)
         {
             if (student == null)
                 throw new OgnpException("Student is null");

@@ -9,8 +9,8 @@ namespace Isu.Extra.Services
 
     public class IsuExtraService : IIsuExtraService
     {
-        private List<NewGroup> _groups = new List<NewGroup>();
-        private List<NewStudent> _students = new List<NewStudent>();
+        private List<ExtraGroup> _groups = new List<ExtraGroup>();
+        private List<ExtraStudent> _students = new List<ExtraStudent>();
         private List<OgnpCourse> _ognpCourses = new List<OgnpCourse>();
 
         private IdFactory _studentIdFactory = new IdFactory();
@@ -18,19 +18,19 @@ namespace Isu.Extra.Services
 
         public IReadOnlyList<OgnpCourse> OgnpCourses => _ognpCourses;
 
-        public NewGroup AddGroup(GroupName name)
+        public ExtraGroup AddGroup(GroupName name)
         {
             if (_groups.Any(g => g.GroupName == name))
             {
                 throw new IsuExtraException("Group already exist");
             }
 
-            var group = new NewGroup(name);
+            var group = new ExtraGroup(name);
             _groups.Add(group);
             return group;
         }
 
-        public NewStudent AddStudent(NewGroup group, string name)
+        public ExtraStudent AddStudent(ExtraGroup group, string name)
         {
             if (group == null)
             {
@@ -42,7 +42,7 @@ namespace Isu.Extra.Services
                 throw new IsuExtraException("Student already exist");
             }
 
-            var student = new NewStudent(name, _studentIdFactory.NextId, group);
+            var student = new ExtraStudent(name, _studentIdFactory.NextId, group);
             _students.Add(student);
             group.AddStudent(student);
             return student;
@@ -82,7 +82,7 @@ namespace Isu.Extra.Services
             return stream;
         }
 
-        public void RegisterOnOgnpCourse(NewStudent student, OgnpCourse course, Stream stream)
+        public void RegisterOnOgnpCourse(ExtraStudent student, OgnpCourse course, Stream stream)
         {
             if (student == null)
             {
@@ -123,7 +123,7 @@ namespace Isu.Extra.Services
             course.AddStudent(student, stream);
         }
 
-        public void UnregisterOgnpCourse(NewStudent student, OgnpCourse course)
+        public void UnregisterOgnpCourse(ExtraStudent student, OgnpCourse course)
         {
             if (student == null)
             {
@@ -154,7 +154,7 @@ namespace Isu.Extra.Services
             course.RemoveStudent(student);
         }
 
-        public IReadOnlyList<NewStudent> GetUnregisteredStudents(NewGroup group)
+        public IReadOnlyList<ExtraStudent> GetUnregisteredStudents(ExtraGroup group)
         {
             if (group == null)
             {
@@ -169,7 +169,7 @@ namespace Isu.Extra.Services
             return _students.Where(s => s.Group == group && s.OgnpCourse.Count == 0).ToList();
         }
 
-        public IReadOnlyList<NewStudent> GetStudentsFromOgnpCourse(OgnpCourse ognpCourse, Stream stream)
+        public IReadOnlyList<ExtraStudent> GetStudentsFromOgnpCourse(OgnpCourse ognpCourse, Stream stream)
         {
             if (ognpCourse == null)
             {

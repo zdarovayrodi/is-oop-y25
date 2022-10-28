@@ -19,8 +19,8 @@ namespace Isu.Extra.Test
             var studentCourse = new OgnpCourse(faculty);
             OgnpCourse ognpCourse = service.AddOgnpCourse(new Faculty(new GroupName("P1111")));
             Stream stream = service.AddOgnpCourseStream(ognpCourse);
-            NewGroup group = service.AddGroup(groupName);
-            NewStudent student = service.AddStudent(group, "Ivan Ivanov");
+            ExtraGroup group = service.AddGroup(groupName);
+            ExtraStudent student = service.AddStudent(group, "Ivan Ivanov");
 
             service.RegisterOnOgnpCourse(student, ognpCourse, stream);
 
@@ -36,8 +36,8 @@ namespace Isu.Extra.Test
             var studentCourse = new OgnpCourse(faculty);
             OgnpCourse ognpCourse = service.AddOgnpCourse(new Faculty(new GroupName("P1111")));
             Stream stream = service.AddOgnpCourseStream(ognpCourse);
-            NewGroup group = service.AddGroup(groupName);
-            NewStudent student = service.AddStudent(group, "Ivan Ivanov");
+            ExtraGroup group = service.AddGroup(groupName);
+            ExtraStudent student = service.AddStudent(group, "Ivan Ivanov");
 
             service.RegisterOnOgnpCourse(student, ognpCourse, stream);
 
@@ -53,8 +53,8 @@ namespace Isu.Extra.Test
             var studentCourse = new OgnpCourse(faculty);
             OgnpCourse ognpCourse = service.AddOgnpCourse(new Faculty(new GroupName("P1111")));
             Stream stream = service.AddOgnpCourseStream(ognpCourse);
-            NewGroup group = service.AddGroup(groupName);
-            NewStudent student = service.AddStudent(group, "Ivan Ivanov");
+            ExtraGroup group = service.AddGroup(groupName);
+            ExtraStudent student = service.AddStudent(group, "Ivan Ivanov");
 
             service.RegisterOnOgnpCourse(student, ognpCourse, stream);
 
@@ -87,9 +87,9 @@ namespace Isu.Extra.Test
             var studentCourse = new OgnpCourse(faculty);
             OgnpCourse ognpCourse = service.AddOgnpCourse(new Faculty(new GroupName("P1111")));
             Stream stream = service.AddOgnpCourseStream(ognpCourse);
-            NewGroup group = service.AddGroup(groupName);
-            NewStudent student = service.AddStudent(group, "Ivan Ivanov");
-            NewStudent student2 = service.AddStudent(group, "Masha Mashina");
+            ExtraGroup group = service.AddGroup(groupName);
+            ExtraStudent student = service.AddStudent(group, "Ivan Ivanov");
+            ExtraStudent student2 = service.AddStudent(group, "Masha Mashina");
 
             service.RegisterOnOgnpCourse(student, ognpCourse, stream);
             var students = service.GetStudentsFromOgnpCourse(ognpCourse, stream);
@@ -107,9 +107,9 @@ namespace Isu.Extra.Test
             var studentCourse = new OgnpCourse(faculty);
             OgnpCourse ognpCourse = service.AddOgnpCourse(new Faculty(new GroupName("P1111")));
             Stream stream = service.AddOgnpCourseStream(ognpCourse);
-            NewGroup group = service.AddGroup(groupName);
-            NewStudent student = service.AddStudent(group, "Ivan Ivanov");
-            NewStudent studentUnregistered = service.AddStudent(group, "Semen Semenov");
+            ExtraGroup group = service.AddGroup(groupName);
+            ExtraStudent student = service.AddStudent(group, "Ivan Ivanov");
+            ExtraStudent studentUnregistered = service.AddStudent(group, "Semen Semenov");
 
             service.RegisterOnOgnpCourse(student, ognpCourse, stream);
             var unregisteredStudents = service.GetUnregisteredStudents(group);
