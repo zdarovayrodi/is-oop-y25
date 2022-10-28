@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Isu.Extra.Exceptions;
 using Isu.Extra.Models;
 
@@ -18,7 +19,7 @@ namespace Isu.Extra.Entities
             Faculty = new Faculty(groupName);
         }
 
-        public IReadOnlyList<Lesson> Lessons => _lessons;
+        public IReadOnlyCollection<Lesson> Lessons => _lessons.AsReadOnly();
         public Faculty Faculty { get; private init; }
 
         public void AddLesson(Lesson lesson)
