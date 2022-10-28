@@ -29,7 +29,7 @@ namespace Isu.Extra.Entities
                 throw new InvalidOperationException("Student already has courses");
             }
 
-            if (!CanRegisterForOgnpCourse(course))
+            if (Faculty == course.Faculty)
             {
                 throw new NewStudentException("Student can't register for this course");
             }
@@ -46,7 +46,5 @@ namespace Isu.Extra.Entities
 
             _ognpCourses.Remove(course);
         }
-
-        private bool CanRegisterForOgnpCourse(OgnpCourse course) => Faculty != course.Faculty;
     }
 }
