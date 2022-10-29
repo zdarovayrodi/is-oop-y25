@@ -6,15 +6,22 @@ namespace Isu.Extra.Services
     using Isu.Extra.Exceptions;
     using Isu.Extra.Models;
     using Isu.Models;
+    using Isu.Services;
 
-    public class IsuExtraService : IIsuExtraService
+    public class IsuExtraService : IIsuService
     {
         private List<ExtraGroup> _groups = new List<ExtraGroup>();
         private List<ExtraStudent> _students = new List<ExtraStudent>();
         private List<OgnpCourse> _ognpCourses = new List<OgnpCourse>();
+        private IIsuService _isuService;
 
         private IdFactory _studentIdFactory = new IdFactory();
         private IdFactory _streamIdFactory = new IdFactory();
+
+        public IsuExtraService()
+        {
+            _isuService = new IsuService();
+        }
 
         public IReadOnlyList<OgnpCourse> OgnpCourses => _ognpCourses;
 
@@ -28,6 +35,46 @@ namespace Isu.Extra.Services
             var group = new ExtraGroup(name);
             _groups.Add(group);
             return group;
+        }
+
+        public Student AddStudent(Group group, string name)
+        {
+            return _isuService.AddStudent(group, name);
+        }
+
+        public Student GetStudent(int id)
+        {
+            return _isuService.GetStudent(id);
+        }
+
+        public Student? FindStudent(int id)
+        {
+            return _isuService.FindStudent(id);
+        }
+
+        public List<Student> FindStudents(GroupName groupName)
+        {
+            return _isuService.FindStudents(groupName);
+        }
+
+        public List<Student> FindStudents(CourseNumber courseNumber)
+        {
+            return _isuService.FindStudents(courseNumber);
+        }
+
+        public Group? FindGroup(GroupName groupName)
+        {
+            return _isuService.FindGroup(groupName);
+        }
+
+        public List<Group> FindGroups(CourseNumber courseNumber)
+        {
+            return _isuService.FindGroups(courseNumber);
+        }
+
+        public void ChangeStudentGroup(Student student, Group newGroup)
+        {
+            _isuService.ChangeStudentGroup(student, newGroup);
         }
 
         public ExtraStudent AddStudent(ExtraGroup group, string name)
@@ -212,6 +259,11 @@ namespace Isu.Extra.Services
             }
 
             return ognpCourse.Streams;
+        }
+
+        Group IIsuService.AddGroup(GroupName name)
+        {
+            return _isuService.AddGroup(name);
         }
     }
 }
