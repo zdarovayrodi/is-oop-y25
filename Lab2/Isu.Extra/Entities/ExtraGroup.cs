@@ -7,20 +7,23 @@ namespace Isu.Extra.Entities
     using Isu.Entities;
     using Isu.Models;
 
-    public class ExtraGroup : Group
+    public class ExtraGroup
     {
         private const int MaxStudents = 30;
         private List<Lesson> _lessons = new List<Lesson>();
-        private List<ExtraStudent> _students = new List<ExtraStudent>();
+        private Group _group;
 
         public ExtraGroup(GroupName groupName)
-            : base(groupName)
         {
+            _group = new Group(groupName);
             Faculty = new Faculty(groupName);
         }
 
         public IReadOnlyCollection<Lesson> Lessons => _lessons.AsReadOnly();
         public Faculty Faculty { get; private init; }
+
+        public GroupName GroupName => _group.GroupName;
+        public ReadOnlyCollection<Student> Students => _group.Students.AsReadOnly();
 
         public void AddLesson(Lesson lesson)
         {
@@ -46,12 +49,12 @@ namespace Isu.Extra.Entities
                 throw new NewGroupException("Student can't be null");
             }
 
-            if (_students.Count >= MaxStudents)
+            if (_group.Students.Count >= MaxStudents)
             {
                 throw new NewGroupException("Group is full");
             }
 
-            _students.Add(student);
+            _group.AddStudent(student.Student);
         }
     }
 }

@@ -5,19 +5,19 @@ namespace Isu.Extra.Entities
 {
     using Isu.Entities;
 
-    public class ExtraStudent : Student
+    public class ExtraStudent
     {
         private const int MaxOgnpCourses = 2;
-
         private List<OgnpCourse> _ognpCourses = new List<OgnpCourse>();
 
         public ExtraStudent(string name, int id, ExtraGroup group)
-            : base(name, id)
         {
+            Student = new Student(name, id);
             Group = group;
             Faculty = new Faculty(group.GroupName);
         }
 
+        public Student Student { get; }
         public ExtraGroup Group { get; }
         public Faculty Faculty { get; }
         public IReadOnlyList<OgnpCourse> OgnpCourse => _ognpCourses.AsReadOnly();
