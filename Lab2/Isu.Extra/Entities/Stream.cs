@@ -24,6 +24,11 @@ namespace Isu.Extra.Entities
                 throw new StreamException("Stream is full");
             }
 
+            if (_students.Contains(student))
+            {
+                throw new StreamException("Student is already in stream");
+            }
+
             _students.Add(student);
         }
 
