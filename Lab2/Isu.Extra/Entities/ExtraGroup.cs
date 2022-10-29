@@ -11,19 +11,19 @@ namespace Isu.Extra.Entities
     {
         private const int MaxStudents = 30;
         private List<Lesson> _lessons = new List<Lesson>();
-        private Group _group;
 
         public ExtraGroup(GroupName groupName)
         {
-            _group = new Group(groupName);
+            Group = new Group(groupName);
             Faculty = new Faculty(groupName);
         }
 
+        public Group Group { get; }
         public IReadOnlyCollection<Lesson> Lessons => _lessons.AsReadOnly();
         public Faculty Faculty { get; private init; }
 
-        public GroupName GroupName => _group.GroupName;
-        public ReadOnlyCollection<Student> Students => _group.Students.AsReadOnly();
+        public GroupName GroupName => Group.GroupName;
+        public ReadOnlyCollection<Student> Students => Group.Students.AsReadOnly();
 
         public void AddLesson(Lesson lesson)
         {
@@ -49,12 +49,12 @@ namespace Isu.Extra.Entities
                 throw new NewGroupException("Student can't be null");
             }
 
-            if (_group.Students.Count >= MaxStudents)
+            if (Group.Students.Count >= MaxStudents)
             {
                 throw new NewGroupException("Group is full");
             }
 
-            _group.AddStudent(student.Student);
+            Group.AddStudent(student.Student);
         }
     }
 }
