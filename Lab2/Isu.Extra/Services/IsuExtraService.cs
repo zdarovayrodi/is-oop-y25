@@ -119,6 +119,11 @@ namespace Isu.Extra.Services
                 throw new IsuExtraException("Student already registered on courses");
             }
 
+            if (student.Faculty == course.Faculty)
+            {
+                throw new IsuExtraException("Student can't register on the same faculty");
+            }
+
             student.AddOgnpCourse(course);
             course.AddStudent(student, stream);
         }
