@@ -31,22 +31,6 @@ namespace Isu.Extra.Entities
             StartTime = startTime;
         }
 
-        public enum Week
-        {
-            Odd,
-            Even,
-        }
-
-        public enum Day
-        {
-            Monday,
-            Tuesday,
-            Wednesday,
-            Thursday,
-            Friday,
-            Saturday,
-        }
-
         public Week LessonWeek { get; }
         public Day LessonDay { get; }
         public TimeOnly StartTime { get; }
