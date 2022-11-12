@@ -8,15 +8,17 @@ namespace Backups.Entities
         private List<IBackupObject> _backupObjects = new List<IBackupObject>();
         private List<IRestorePoint> _restorePoints = new List<IRestorePoint>();
 
-        public BackupTask(string backupName, IStorage storage)
+        public BackupTask(string backupName, IStorage storage, string backupFullPath)
         {
             if (string.IsNullOrEmpty(backupName)) throw new BackupException("Backup name cannot be null or empty");
             if (storage == null) throw new BackupException("Storage cannot be null");
 
             BackupName = backupName;
             Storage = storage;
+            BackupFullPath = backupFullPath;
         }
 
+        public string BackupFullPath { get; }
         public string BackupName { get; }
 
         public IReadOnlyList<IRestorePoint> RestorePoints => _restorePoints.AsReadOnly();
@@ -43,8 +45,10 @@ namespace Backups.Entities
 
         public IRestorePoint CreateRestorePoint()
         {
-            IRestorePoint restorePoint = new RestorePoint(BackupName, _backupObjects);
+            var id = Guid.NewGuid();
+            IRestorePoint restorePoint = new RestorePoint(BackupName + id, _backupObjects);
             _restorePoints.Add(restorePoint);
+            Storage.SaveFiles(this, restorePoint);
             return restorePoint;
         }
     }

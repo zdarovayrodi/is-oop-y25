@@ -7,6 +7,7 @@ namespace Backups.Entities
         IReadOnlyList<IRestorePoint> RestorePoints { get; }
         IStorage Storage { get; }
         string BackupName { get; }
+        string BackupFullPath { get; }
 
         void AddBackupObject(IBackupObject backupObject);
         void AddBackupObjects(List<IBackupObject> backupObjectList);
