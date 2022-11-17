@@ -19,7 +19,7 @@ namespace Backups.Models
             {
                 foreach (var file in restorePoint.BackupObjects)
                 {
-                    archive.CreateEntryFromFile(file.FileName, file.FileName);
+                    archive.CreateEntryFromFile(file.Path, file.Name);
                 }
             }
         }

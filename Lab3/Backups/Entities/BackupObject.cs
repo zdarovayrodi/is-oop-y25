@@ -3,17 +3,35 @@ namespace Backups.Entities
     using Backups.Exceptions;
     public class BackupObject : IBackupObject
     {
-        public BackupObject(string fileName, string filePath)
+        private readonly IRepository _repository;
+        public BackupObject(IRepository repository)
         {
-            if (string.IsNullOrEmpty(fileName)) throw new BackupException("file name is null");
-            if (string.IsNullOrEmpty(filePath)) throw new BackupException("file path is null");
-
-            FileName = fileName;
-            FilePath = filePath;
+            _repository = repository;
+            Name = string.Empty;
+            Path = string.Empty;
         }
 
-        public string FileName { get; }
-        public string FilePath { get; }
-        public string FullPath => FilePath + FileName;
+        public void AddFile(string fileName, string filePath)
+        {
+            if (string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(filePath))
+                throw new BackupObjectException("File name or path is empty");
+            if (!_repository.Files.Contains(filePath))
+                throw new BackupObjectException("File not found");
+            Name = fileName;
+            Path = filePath;
+        }
+
+        public void AddDirectory(string directoryName, string directoryPath)
+        {
+            if (string.IsNullOrEmpty(directoryName) || string.IsNullOrEmpty(directoryPath))
+                throw new BackupObjectException("Directory name or path is empty");
+            if (!_repository.Directories.Contains(directoryPath))
+                throw new BackupObjectException("Directory not found");
+            Name = directoryName;
+            Path = directoryPath;
+        }
+
+        public string Name { get; private set; }
+        public string Path { get; private set; }
     }
 }

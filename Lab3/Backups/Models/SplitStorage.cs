@@ -15,9 +15,9 @@ namespace Backups.Models
             var id = Guid.NewGuid();
             foreach (var file in restorePoint.BackupObjects)
             {
-                string zipPath = storageName + "\\" + file.FileName + id + ".zip";
+                string zipPath = storageName + "\\" + file.Name + id + ".zip";
                 using ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create);
-                archive.CreateEntryFromFile(file.FullPath, file.FileName);
+                archive.CreateEntryFromFile(file.Path, file.Name);
                 archive.Dispose();
             }
         }
