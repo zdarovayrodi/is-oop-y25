@@ -7,6 +7,7 @@ namespace Backups.Entities
     {
         private List<IBackupObject> _backupObjects = new List<IBackupObject>();
         private List<IRestorePoint> _restorePoints = new List<IRestorePoint>();
+        private IdFactory _idFactory = new IdFactory();
 
         public BackupTask(string backupName, IStorage storage, string backupFullPath)
         {
@@ -45,7 +46,7 @@ namespace Backups.Entities
 
         public IRestorePoint CreateRestorePoint()
         {
-            var id = Guid.NewGuid();
+            var id = _idFactory.NextId;
             IRestorePoint restorePoint = new RestorePoint(BackupName + id, _backupObjects);
             _restorePoints.Add(restorePoint);
             Storage.SaveFiles(this, restorePoint);
