@@ -2,7 +2,7 @@ namespace Backups.Models
 {
     using Backups.Entities;
 
-    public interface IStorage
+    public interface IAlgorithm
     {
         void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint, int id);
     }
