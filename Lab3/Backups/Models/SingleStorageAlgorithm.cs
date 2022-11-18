@@ -10,9 +10,11 @@ namespace Backups.Models
         {
             if (restorePoint is null) throw new StorageException("restore Point is null");
             string backupFolderFullPath = backupTask.BackupFullPath;
-            if (!Directory.Exists(backupFolderFullPath)) Directory.CreateDirectory(backupFolderFullPath);
+            if (!Directory.Exists(backupFolderFullPath))
+                Directory.CreateDirectory(backupFolderFullPath);
+            if (!Directory.Exists(backupFolderFullPath + restorePoint.Name))
+                Directory.CreateDirectory(backupFolderFullPath + restorePoint.Name);
             string zipPath = backupFolderFullPath + restorePoint.Name + ".zip";
-
             using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
             {
                 foreach (var file in restorePoint.BackupObjects)
@@ -22,6 +24,13 @@ namespace Backups.Models
                     archive.CreateEntryFromFile(file.Path, fileName);
                 }
             }
+
+            AddStorage(backupTask, new Storage(zipPath));
+        }
+
+        public void AddStorage(IBackupTask backupTask, IStorage storage)
+        {
+            backupTask.AddStorage(storage);
         }
     }
 }

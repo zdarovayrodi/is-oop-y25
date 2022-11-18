@@ -20,5 +20,10 @@ namespace Backups.Models
                 archive.Dispose();
             }
         }
+
+        public void AddStorage(IBackupTask backupTask, IStorage storage)
+        {
+            backupTask.AddStorage(storage);
+        }
     }
 }

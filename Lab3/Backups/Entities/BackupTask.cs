@@ -10,13 +10,12 @@ namespace Backups.Entities
         private List<IStorage> _storages = new List<IStorage>();
         private IdFactory _idFactory = new IdFactory();
 
-        public BackupTask(string backupName, IAlgorithm storage, string backupFullPath)
+        public BackupTask(string backupName, IAlgorithm algorithm, string backupFullPath)
         {
             if (string.IsNullOrEmpty(backupName)) throw new BackupException("Backup name cannot be null or empty");
-            if (storage == null) throw new BackupException("Storage cannot be null");
 
+            Algorithm = algorithm ?? throw new BackupException("Storage cannot be null");
             BackupName = backupName;
-            Algorithm = storage;
             BackupFullPath = backupFullPath;
         }
 
@@ -51,8 +50,14 @@ namespace Backups.Entities
             int id = _idFactory.NextId;
             IRestorePoint restorePoint = new RestorePoint(BackupName + id, _backupObjects);
             _restorePoints.Add(restorePoint);
-            Storage.SaveFiles(this, restorePoint, id);
+            Algorithm.SaveFiles(this, restorePoint, id);
             return restorePoint;
+        }
+
+        public void AddStorage(IStorage storage)
+        {
+            if (storage == null) throw new BackupException("Storage cannot be null");
+            _storages.Add(storage);
         }
     }
 }

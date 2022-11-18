@@ -9,10 +9,10 @@ namespace Backups.Entities
         IAlgorithm Algorithm { get; }
         string BackupName { get; }
         string BackupFullPath { get; }
-
         void AddBackupObject(IBackupObject backupObject);
         void AddBackupObjects(List<IBackupObject> backupObjectList);
         void RemoveBackupObject(IBackupObject backupObject);
+        void AddStorage(IStorage storage);
         IRestorePoint CreateRestorePoint();
     }
 }
