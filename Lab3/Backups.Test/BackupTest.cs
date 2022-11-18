@@ -8,7 +8,7 @@ namespace Backups.Test
     public class BackupTest
     {
         [Fact]
-        public void Test1()
+        public void SingleStorageTest()
         {
             IBackupTask backupTask = new BackupTask("testBackup/", new SingleStorageAlgorithm(), "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/TestFiles/");
             IRepository repository = new Repository();
@@ -28,6 +28,12 @@ namespace Backups.Test
 
             backupTask.CreateRestorePoint();
             Assert.Equal(2, backupTask.RestorePoints.Count);
+            Assert.Equal(2, backupTask.Storages.Count);
+        }
+
+        [Fact]
+        public void SplitStorageTest()
+        {
         }
     }
 }

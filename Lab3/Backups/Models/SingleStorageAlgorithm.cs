@@ -14,6 +14,7 @@ namespace Backups.Models
                 Directory.CreateDirectory(backupFolderFullPath);
             if (!Directory.Exists(backupFolderFullPath + restorePoint.Name))
                 Directory.CreateDirectory(backupFolderFullPath + restorePoint.Name);
+
             string zipPath = backupFolderFullPath + restorePoint.Name + ".zip";
             using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
             {
@@ -25,6 +26,7 @@ namespace Backups.Models
                 }
             }
 
+            Directory.Delete(backupFolderFullPath + restorePoint.Name, true);
             AddStorage(backupTask, new Storage(zipPath));
         }
 
