@@ -5,7 +5,8 @@ namespace Backups.Entities
     public interface IBackupTask
     {
         IReadOnlyList<IRestorePoint> RestorePoints { get; }
-        IStorage Storage { get; }
+        IReadOnlyList<IStorage> Storages { get; }
+        IAlgorithm Algorithm { get; }
         string BackupName { get; }
         string BackupFullPath { get; }
 

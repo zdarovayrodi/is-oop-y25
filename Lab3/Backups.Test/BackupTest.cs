@@ -10,7 +10,7 @@ namespace Backups.Test
         [Fact]
         public void Test1()
         {
-            IBackupTask backupTask = new BackupTask("testBackup/", new SingleStorage(), "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/TestFiles/");
+            IBackupTask backupTask = new BackupTask("testBackup/", new SingleStorageAlgorithm(), "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/TestFiles/");
             IRepository repository = new Repository();
             repository.AddFile("/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups/TestFiles/File.txt");
             repository.AddFile("/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups/TestFiles/File1.txt");

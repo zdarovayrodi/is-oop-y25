@@ -4,7 +4,7 @@ namespace Backups.Models
     using Backups.Entities;
     using Backups.Exceptions;
 
-    public class SplitStorage : IAlgorithm
+    public class SplitStorageAlgorithm : IAlgorithm
     {
         public void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint, int id)
         {

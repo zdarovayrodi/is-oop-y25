@@ -7,23 +7,25 @@ namespace Backups.Entities
     {
         private List<IBackupObject> _backupObjects = new List<IBackupObject>();
         private List<IRestorePoint> _restorePoints = new List<IRestorePoint>();
+        private List<IStorage> _storages = new List<IStorage>();
         private IdFactory _idFactory = new IdFactory();
 
-        public BackupTask(string backupName, IStorage storage, string backupFullPath)
+        public BackupTask(string backupName, IAlgorithm storage, string backupFullPath)
         {
             if (string.IsNullOrEmpty(backupName)) throw new BackupException("Backup name cannot be null or empty");
             if (storage == null) throw new BackupException("Storage cannot be null");
 
             BackupName = backupName;
-            Storage = storage;
+            Algorithm = storage;
             BackupFullPath = backupFullPath;
         }
 
         public string BackupFullPath { get; }
+        public IReadOnlyList<IStorage> Storages => _storages.AsReadOnly();
         public string BackupName { get; }
 
         public IReadOnlyList<IRestorePoint> RestorePoints => _restorePoints.AsReadOnly();
-        public IStorage Storage { get; }
+        public IAlgorithm Algorithm { get; }
 
         public void AddBackupObject(IBackupObject backupObject)
         {
