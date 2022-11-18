@@ -6,13 +6,12 @@ namespace Backups.Models
 
     public class SplitStorage : IStorage
     {
-        public void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint)
+        public void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint, int id)
         {
             if (restorePoint is null) throw new StorageException("restore Point is null");
             string storageName = backupTask.BackupName;
 
             if (!Directory.Exists(storageName)) Directory.CreateDirectory(storageName);
-            var id = Guid.NewGuid();
             foreach (var file in restorePoint.BackupObjects)
             {
                 string zipPath = storageName + "\\" + file.Name + id + ".zip";

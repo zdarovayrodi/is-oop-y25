@@ -4,6 +4,6 @@ namespace Backups.Models
 
     public interface IStorage
     {
-        void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint);
+        void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint, int id);
     }
 }

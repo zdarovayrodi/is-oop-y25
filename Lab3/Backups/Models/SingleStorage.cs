@@ -6,20 +6,20 @@ namespace Backups.Models
 
     public class SingleStorage : IStorage
     {
-        public void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint)
+        public void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint, int id)
         {
             if (restorePoint is null) throw new StorageException("restore Point is null");
-            string backupFolderFullPath = backupTask.BackupFullPath + backupTask.BackupName;
+            string backupFolderFullPath = backupTask.BackupFullPath;
             if (!Directory.Exists(backupFolderFullPath)) Directory.CreateDirectory(backupFolderFullPath);
-            var id = Guid.NewGuid();
-            string zipPath = backupFolderFullPath + restorePoint.Name + id;
-            if (!Directory.Exists(zipPath)) Directory.CreateDirectory(zipPath);
+            string zipPath = backupFolderFullPath + restorePoint.Name + ".zip";
 
             using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
             {
                 foreach (var file in restorePoint.BackupObjects)
                 {
-                    archive.CreateEntryFromFile(file.Path, file.Name);
+                    string fileName = file.Name + " " + id;
+                    if (file.Extension != string.Empty) fileName += "." + file.Extension;
+                    archive.CreateEntryFromFile(file.Path, fileName);
                 }
             }
         }

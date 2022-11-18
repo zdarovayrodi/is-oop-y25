@@ -46,10 +46,10 @@ namespace Backups.Entities
 
         public IRestorePoint CreateRestorePoint()
         {
-            var id = _idFactory.NextId;
+            int id = _idFactory.NextId;
             IRestorePoint restorePoint = new RestorePoint(BackupName + id, _backupObjects);
             _restorePoints.Add(restorePoint);
-            Storage.SaveFiles(this, restorePoint);
+            Storage.SaveFiles(this, restorePoint, id);
             return restorePoint;
         }
     }
