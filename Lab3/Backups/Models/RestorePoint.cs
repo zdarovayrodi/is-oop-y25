@@ -17,6 +17,6 @@ namespace Backups.Models
 
         public DateTime CreationDate { get; }
         public string Name { get; }
-        public IReadOnlyList<IBackupObject> BackupObjects => this._backupObjects.AsReadOnly();
+        public IReadOnlyList<IBackupObject> BackupObjects => _backupObjects.AsReadOnly();
     }
 }
