@@ -16,6 +16,17 @@ namespace Backups.Entities
         public IReadOnlyList<string> Files => _files.AsReadOnly();
         public IReadOnlyList<string> Directories => _directories.AsReadOnly();
 
+        // return file stream 
+        public Stream GetFile(string name)
+        {
+            if (!_files.Contains(name))
+            {
+                throw new FileDoesNotExistException();
+            }
+
+            return File.OpenRead(name);
+        }
+
         public void AddFile(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))
