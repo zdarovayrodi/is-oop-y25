@@ -9,7 +9,7 @@ namespace Backups.Models
         public void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint, int id)
         {
             if (restorePoint is null) throw new StorageException("restore Point is null");
-            string backupFolderFullPath = backupTask.BackupFullPath;
+            string backupFolderFullPath = backupTask.Path;
 
             if (!Directory.Exists(backupFolderFullPath))
                 Directory.CreateDirectory(backupFolderFullPath);

@@ -9,13 +9,14 @@ namespace Backups.Models
         public void SaveFiles(IBackupTask backupTask, IRestorePoint restorePoint, int id)
         {
             if (restorePoint is null) throw new StorageException("restore Point is null");
-            string backupFolderFullPath = backupTask.BackupFullPath;
+            string backupFolderFullPath = backupTask.Path;
             if (!Directory.Exists(backupFolderFullPath))
                 Directory.CreateDirectory(backupFolderFullPath);
-            if (!Directory.Exists(backupFolderFullPath + restorePoint.Name))
-                Directory.CreateDirectory(backupFolderFullPath + restorePoint.Name);
+            string restorePointFolderFullPath = Path.Combine(backupFolderFullPath, restorePoint.Name);
+            if (!Directory.Exists(restorePointFolderFullPath))
+                Directory.CreateDirectory(restorePointFolderFullPath);
 
-            string zipPath = backupFolderFullPath + restorePoint.Name + ".zip";
+            string zipPath = restorePointFolderFullPath + ".zip";
             using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
             {
                 foreach (var file in restorePoint.BackupObjects)

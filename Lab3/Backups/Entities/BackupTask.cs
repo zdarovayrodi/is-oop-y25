@@ -15,13 +15,13 @@ namespace Backups.Entities
             if (string.IsNullOrEmpty(backupName)) throw new BackupException("Backup name cannot be null or empty");
 
             Algorithm = algorithm ?? throw new BackupException("Storage cannot be null");
-            BackupName = backupName;
-            BackupFullPath = backupFullPath;
+            Name = backupName;
+            Path = backupFullPath;
         }
 
-        public string BackupFullPath { get; }
+        public string Path { get; }
         public IReadOnlyList<IStorage> Storages => _storages.AsReadOnly();
-        public string BackupName { get; }
+        public string Name { get; }
 
         public IReadOnlyList<IRestorePoint> RestorePoints => _restorePoints.AsReadOnly();
         public IAlgorithm Algorithm { get; }
@@ -48,7 +48,7 @@ namespace Backups.Entities
         public IRestorePoint CreateRestorePoint()
         {
             int id = _idFactory.NextId;
-            IRestorePoint restorePoint = new RestorePoint(BackupName + id, _backupObjects);
+            IRestorePoint restorePoint = new RestorePoint(Name + id, _backupObjects);
             _restorePoints.Add(restorePoint);
             Algorithm.SaveFiles(this, restorePoint, id);
             return restorePoint;
