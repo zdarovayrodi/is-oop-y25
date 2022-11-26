@@ -1,6 +1,6 @@
 namespace Banks.Accounts
 {
-    using Banks.Entities.Interface;
+    using Banks.Entities.Interfaces;
 
     public abstract class DepositAccount : IAccount
     {

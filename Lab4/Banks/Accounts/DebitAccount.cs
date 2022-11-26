@@ -1,6 +1,6 @@
 namespace Banks.Accounts
 {
-    using Banks.Entities.Interface;
+    using Banks.Entities.Interfaces;
 
     public abstract class DebitAccount : IAccount
     {
@@ -11,10 +11,10 @@ namespace Banks.Accounts
         }
 
         public IClient Client { get; }
-        public abstract void Transfer(IAccount account, decimal amount);
 
         public decimal Balance { get; private set; }
         public decimal InterestRate { get; }
+        public abstract void Transfer(IAccount account, decimal amount);
         public abstract void AddMoney(decimal amount);
         public abstract void WithdrawMoney(decimal amount);
     }

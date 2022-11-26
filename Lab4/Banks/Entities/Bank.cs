@@ -1,7 +1,7 @@
 namespace Banks.Entities
 {
     using Banks.Accounts;
-    using Banks.Entities.Interface;
+    using Banks.Entities.Interfaces;
     using Banks.Exceptions;
 
     public class Bank : IBank

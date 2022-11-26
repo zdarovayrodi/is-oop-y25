@@ -1,4 +1,4 @@
-namespace Banks.Entities.Interface
+namespace Banks.Entities.Interfaces
 {
     using Banks.Accounts;
 
