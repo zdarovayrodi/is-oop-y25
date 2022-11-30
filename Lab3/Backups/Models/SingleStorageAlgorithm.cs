@@ -6,7 +6,7 @@ namespace Backups.Models
 
     public class SingleStorageAlgorithm : IAlgorithm
     {
-        public byte[] Compress(IBackupTask backupTask, IRestorePoint restorePoint, int id)
+        public void Compress(IBackupTask backupTask, IRestorePoint restorePoint, int id)
         {
             string zipDir = Directory.CreateDirectory(backupTask.FullPath).FullName;
             string zipPath = Path.Combine(zipDir, $"{restorePoint.Name}_{id}.zip");
@@ -14,12 +14,11 @@ namespace Backups.Models
             foreach (var backupObject in restorePoint.BackupObjects)
             {
                 zipArchive.CreateEntryFromFile(backupObject.FullPath, $"{backupObject.Name}_{id}.{backupObject.Extension}");
-                var storage = new Storage(backupObject.FullPath, $"{backupObject.Name}_{id}.{backupObject.Extension}");
+                var storage = new Storage(backupObject.FullPath, zipPath, File.ReadAllBytes(backupObject.FullPath));
                 restorePoint.AddStorage(storage);
             }
 
             zipArchive.Dispose();
-            return File.ReadAllBytes(zipPath);
         }
     }
 }
