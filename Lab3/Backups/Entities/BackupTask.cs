@@ -1,5 +1,6 @@
 namespace Backups.Entities
 {
+    using System.IO.Compression;
     using Backups.Exceptions;
     using Backups.Models;
 
@@ -7,20 +8,20 @@ namespace Backups.Entities
     {
         private List<IBackupObject> _backupObjects = new List<IBackupObject>();
         private List<IRestorePoint> _restorePoints = new List<IRestorePoint>();
-        private List<IStorage> _storages = new List<IStorage>();
         private IdFactory _idFactory = new IdFactory();
+        private IRepository _repository;
 
-        public BackupTask(string backupName, IAlgorithm algorithm, string backupFullPath)
+        public BackupTask(string backupName, IAlgorithm algorithm, string backupFullFullPath, IRepository repository)
         {
             if (string.IsNullOrEmpty(backupName)) throw new BackupException("Backup name cannot be null or empty");
 
             Algorithm = algorithm ?? throw new BackupException("Storage cannot be null");
             Name = backupName;
-            Path = backupFullPath;
+            FullPath = backupFullFullPath;
+            _repository = repository;
         }
 
-        public string Path { get; }
-        public IReadOnlyList<IStorage> Storages => _storages.AsReadOnly();
+        public string FullPath { get; }
         public string Name { get; }
 
         public IReadOnlyList<IRestorePoint> RestorePoints => _restorePoints.AsReadOnly();
@@ -45,19 +46,22 @@ namespace Backups.Entities
             _backupObjects.Remove(backupObject);
         }
 
-        public IRestorePoint CreateRestorePoint()
+        public IRestorePoint CreateRestorePoint(string restorePointName)
         {
             int id = _idFactory.NextId;
-            IRestorePoint restorePoint = new RestorePoint(Name + id, _backupObjects);
-            _restorePoints.Add(restorePoint);
-            Algorithm.SaveFiles(this, restorePoint, id);
-            return restorePoint;
-        }
+            if (!Directory.Exists(FullPath))
+                Directory.CreateDirectory(FullPath);
+            if (string.IsNullOrEmpty(restorePointName))
+                restorePointName = $"RestorePoint_{id}";
+            if (!Directory.Exists(Path.Combine(FullPath, restorePointName)))
+                Directory.CreateDirectory(Path.Combine(FullPath, restorePointName));
+            IRestorePoint restorePoint = new RestorePoint(restorePointName + id, _backupObjects);
+            Algorithm.Compress(this, restorePoint, id);
 
-        public void AddStorage(IStorage storage)
-        {
-            if (storage == null) throw new BackupException("Storage cannot be null");
-            _storages.Add(storage);
+            // byte[] compressedData = Algorithm.Compress(this, restorePoint, id);
+            // _repository.Write($"{FullPath}{restorePointName} {id}.zip", compressedData);
+            _restorePoints.Add(restorePoint);
+            return restorePoint;
         }
     }
 }

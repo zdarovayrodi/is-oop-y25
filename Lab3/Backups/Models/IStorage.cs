@@ -2,5 +2,6 @@ namespace Backups.Models;
 
 public interface IStorage
 {
-    string Path { get; }
+    string OriginalPath { get; }
+    string BackupPath { get; }
 }

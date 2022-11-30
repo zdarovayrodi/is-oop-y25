@@ -6,6 +6,7 @@ namespace Backups.Models
     public class RestorePoint : IRestorePoint
     {
         private readonly List<IBackupObject> _backupObjects;
+        private List<IStorage> _storages = new List<IStorage>();
 
         public RestorePoint(string name, List<IBackupObject> backupObjects)
         {
@@ -18,5 +19,10 @@ namespace Backups.Models
         public DateTime CreationDate { get; }
         public string Name { get; }
         public IReadOnlyList<IBackupObject> BackupObjects => _backupObjects.AsReadOnly();
+        public IReadOnlyList<IStorage> Storages => _storages.AsReadOnly();
+        public void AddStorage(IStorage storage)
+        {
+            _storages.Add(storage);
+        }
     }
 }

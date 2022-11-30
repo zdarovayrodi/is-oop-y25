@@ -4,11 +4,22 @@ namespace Backups.Entities
 
     public class Repository : IRepository
     {
-        public Stream GetStream(string path)
+        public byte[] GetFile(string filePath)
         {
-            if (!File.Exists(path))
-                throw new RepositoryException("File not found");
-            return new FileStream(path, FileMode.Open, FileAccess.Read);
+            if (!File.Exists(filePath))
+                throw new BackupException("Path not found");
+            return File.ReadAllBytes(filePath);
+        }
+
+        public void CreateDirectory(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
+        public void Write(string path, byte[] data)
+        {
+            File.WriteAllBytes(path, data);
         }
     }
 }

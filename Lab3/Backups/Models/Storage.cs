@@ -2,12 +2,14 @@ namespace Backups.Models
 {
     public class Storage : IStorage
     {
-        public Storage(string path)
+        public Storage(string originalPath, string backupPath)
         {
-            if (!Directory.Exists(path) && !File.Exists(path)) throw new ArgumentException("Path is not valid");
-            Path = path;
+            if (!Directory.Exists(originalPath) && !File.Exists(originalPath)) throw new ArgumentException("Path is not valid");
+            OriginalPath = originalPath;
+            BackupPath = backupPath;
         }
 
-        public string Path { get; }
+        public string OriginalPath { get; }
+        public string BackupPath { get; }
     }
 }

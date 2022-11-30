@@ -2,6 +2,8 @@ namespace Backups.Entities
 {
     public interface IRepository
     {
-        Stream GetStream(string path);
+        byte[] GetFile(string filePath);
+        void CreateDirectory(string path);
+        void Write(string path, byte[] data);
     }
 }

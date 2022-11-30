@@ -6,6 +6,8 @@ namespace Backups.Models
     {
         DateTime CreationDate { get; }
         string Name { get; }
+        IReadOnlyList<IStorage> Storages { get; }
         IReadOnlyList<IBackupObject> BackupObjects { get; }
+        void AddStorage(IStorage storage);
     }
 }

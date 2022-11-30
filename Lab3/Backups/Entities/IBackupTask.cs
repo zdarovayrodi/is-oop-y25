@@ -5,14 +5,12 @@ namespace Backups.Entities
     public interface IBackupTask
     {
         IReadOnlyList<IRestorePoint> RestorePoints { get; }
-        IReadOnlyList<IStorage> Storages { get; }
         IAlgorithm Algorithm { get; }
         string Name { get; }
-        string Path { get; }
+        string FullPath { get; }
         void AddBackupObject(IBackupObject backupObject);
         void AddBackupObjects(List<IBackupObject> backupObjectList);
         void RemoveBackupObject(IBackupObject backupObject);
-        void AddStorage(IStorage storage);
-        IRestorePoint CreateRestorePoint();
+        IRestorePoint CreateRestorePoint(string restorePointName);
     }
 }
