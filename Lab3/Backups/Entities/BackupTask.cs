@@ -63,5 +63,12 @@ namespace Backups.Entities
             _restorePoints.Add(restorePoint);
             return restorePoint;
         }
+
+        public void DeleteRestorePoint(IRestorePoint restorePoint)
+        {
+            if (restorePoint == null) throw new BackupException("Restore point cannot be null");
+            if (!_restorePoints.Contains(restorePoint)) throw new BackupException("Restore point not found");
+            _restorePoints.Remove(restorePoint);
+        }
     }
 }

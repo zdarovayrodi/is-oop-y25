@@ -12,5 +12,6 @@ namespace Backups.Entities
         void AddBackupObjects(List<IBackupObject> backupObjectList);
         void RemoveBackupObject(IBackupObject backupObject);
         IRestorePoint CreateRestorePoint(string restorePointName);
+        void DeleteRestorePoint(IRestorePoint restorePoint);
     }
 }
