@@ -13,11 +13,11 @@ namespace Backups.Test
             IBackupTask backupTask = new BackupTask(
                 "testBackup/",
                 new SingleStorageAlgorithm(),
-                "https://github.com/is-oop-y25/zdarovayrodi/blob/lab-3/Lab3/Backups.Test/TestFiles",
+                "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/",
                 new Repository());
 
-            IBackupObject backupObject1 = new BackupObject("File", "txt", "https://github.com/is-oop-y25/zdarovayrodi/blob/lab-3/Lab3/Backups.Test/TestFiles/File.txt");
-            IBackupObject backupObject2 = new BackupObject("File1", "txt", "https://github.com/is-oop-y25/zdarovayrodi/blob/lab-3/Lab3/Backups.Test/TestFiles/File1.txt");
+            IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt");
+            IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt");
 
             backupTask.AddBackupObject(backupObject1);
             backupTask.AddBackupObject(backupObject2);
@@ -47,11 +47,11 @@ namespace Backups.Test
             IBackupTask backupTask = new BackupTask(
                 "testBackup/",
                 new SplitStorageAlgorithm(),
-                "https://github.com/is-oop-y25/zdarovayrodi/blob/lab-3/Lab3/Backups.Test/TestFiles",
+                "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt",
                 new Repository());
 
-            IBackupObject backupObject1 = new BackupObject("File", "txt", "https://github.com/is-oop-y25/zdarovayrodi/blob/lab-3/Lab3/Backups.Test/TestFiles/File.txt");
-            IBackupObject backupObject2 = new BackupObject("File1", "txt", "https://github.com/is-oop-y25/zdarovayrodi/blob/lab-3/Lab3/Backups.Test/TestFiles/File1.txt");
+            IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt");
+            IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt");
 
             backupTask.AddBackupObject(backupObject1);
             backupTask.AddBackupObject(backupObject2);
