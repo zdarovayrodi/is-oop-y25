@@ -8,4 +8,5 @@ public interface IDepositAccount
     decimal Balance { get; }
     IReadOnlyDictionary<decimal, double> InterestRates { get; }
     DateOnly EndDate { get; }
+    void ApplyMonthlyInterest();
 }

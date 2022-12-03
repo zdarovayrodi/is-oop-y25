@@ -19,8 +19,23 @@ namespace Banks.Accounts
         }
 
         public IClient Client { get; }
-        public decimal Balance { get; }
+        public decimal Balance { get; private set; }
         public IReadOnlyDictionary<decimal, double> InterestRates { get; }
         public DateOnly EndDate { get; }
+        public void ApplyMonthlyInterest()
+        {
+            Balance += Balance * (decimal)CurrentInterestRate();
+        }
+
+        private double CurrentInterestRate()
+        {
+            double currentInterestRate = 0;
+            foreach (var interestRate in InterestRates)
+            {
+                if (Balance >= interestRate.Key) currentInterestRate = interestRate.Value;
+            }
+
+            return currentInterestRate / 12;
+        }
     }
 }
