@@ -1,9 +1,11 @@
+using Banks.Models;
+
 namespace Banks.Accounts
 {
     using Banks.Accounts.Interfaces;
     using Banks.Entities.Interfaces;
 
-    public class CreditAccount : ICreditAccount
+    public class CreditAccount : IAccount
     {
         public CreditAccount(IClient client, decimal creditLimit, decimal fixedCommission)
         {
@@ -18,6 +20,21 @@ namespace Banks.Accounts
 
         public IClient Client { get; }
         public decimal Balance { get; private set; } = 0;
+        public Trasaction Transfer(IAccount account, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Trasaction Withdraw(decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Trasaction Deposit(decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
         public decimal CreditLimit { get; }
         public decimal FixedCommission { get; }
         public void ApplyDailyCommission()

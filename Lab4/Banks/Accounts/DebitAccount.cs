@@ -1,9 +1,11 @@
+using Banks.Models;
+
 namespace Banks.Accounts
 {
     using Banks.Accounts.Interfaces;
     using Banks.Entities.Interfaces;
 
-    public class DebitAccount : IDebitAccount
+    public class DebitAccount : IAccount
     {
         private double _appliedInterestBalance = 0;
         public DebitAccount(IClient client, double interestRate = 0)
@@ -18,6 +20,21 @@ namespace Banks.Accounts
         public IClient Client { get; }
         public decimal Balance { get; private set; } = 0;
         public double InterestRate { get; } = 0;
+
+        public Trasaction Transfer(IAccount account, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        Trasaction IAccount.Withdraw(decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Trasaction Deposit(decimal amount)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Withdraw(decimal amount)
         {
