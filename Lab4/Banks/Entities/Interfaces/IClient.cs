@@ -6,5 +6,7 @@ namespace Banks.Entities.Interfaces
         string Surname { get; }
         string Address { get; }
         string Passport { get; }
+        void SetAddress(string address);
+        void SetPassport(string passport);
     }
 }
