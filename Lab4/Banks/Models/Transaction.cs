@@ -2,9 +2,9 @@ namespace Banks.Models
 {
     using Banks.Accounts.Interfaces;
 
-    public class Trasaction
+    public class Transaction
     {
-        public Trasaction(IAccount from, IAccount to, decimal amount)
+        public Transaction(IAccount from, IAccount? to, decimal amount)
         {
             if (from == null || to == null)
             {
@@ -17,13 +17,13 @@ namespace Banks.Models
         }
 
         public IAccount From { get; }
-        public IAccount To { get; }
+        public IAccount? To { get; }
         public decimal Amount { get; }
 
         public void Revert()
         {
             From.Withdraw(Amount);
-            To.Deposit(Amount);
+            To?.Deposit(Amount);
         }
     }
 }
