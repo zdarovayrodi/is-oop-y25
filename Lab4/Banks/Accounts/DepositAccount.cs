@@ -1,12 +1,13 @@
-using Banks.Models;
-
 namespace Banks.Accounts
 {
     using Banks.Accounts.Interfaces;
     using Banks.Entities.Interfaces;
+    using Banks.Models;
 
     public class DepositAccount : IAccount
     {
+        private List<Transaction> _transactions = new List<Transaction>();
+
         public DepositAccount(IClient client, Dictionary<decimal, double> interestRates, decimal balance, DateOnly endDate)
         {
             if (interestRates == null) throw new ArgumentNullException(nameof(interestRates));
@@ -22,19 +23,45 @@ namespace Banks.Accounts
 
         public IClient Client { get; }
         public decimal Balance { get; private set; }
-        public Trasaction Transfer(IAccount account, decimal amount)
+        public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
+
+        public Transaction Transfer(IAccount account, decimal amount)
         {
-            throw new NotImplementedException();
+            if (account == null) throw new ArgumentNullException(nameof(account));
+            if (amount <= 0) throw new ArgumentException("Amount must be positive", nameof(amount));
+            if (Balance < amount) throw new ArgumentException("Insufficient funds", nameof(amount));
+
+            Balance -= amount;
+            account.Deposit(amount);
+            var transaction = new Transaction(this, account, amount);
+            _transactions.Add(transaction);
+            return transaction;
         }
 
-        public Trasaction Withdraw(decimal amount)
+        public Transaction Withdraw(decimal amount)
         {
-            throw new NotImplementedException();
+            if (EndDate > DateOnly.FromDateTime(DateTime.Today)) throw new InvalidOperationException("Cannot transfer money from a deposit account before the end date");
+            if (amount <= 0) throw new ArgumentException("Amount must be positive", nameof(amount));
+            if (Balance < amount) throw new ArgumentException("Insufficient funds", nameof(amount));
+
+            var transaction = new Transaction(this, null, amount);
+            _transactions.Add(transaction);
+            Balance -= amount;
+            return transaction;
         }
 
-        public Trasaction Deposit(decimal amount)
+        public Transaction Deposit(decimal amount)
         {
-            throw new NotImplementedException();
+            throw new Exception("Cannot deposit money into a deposit account");
+        }
+
+        public void RevertTransaction(Transaction transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+            if (!_transactions.Contains(transaction)) throw new ArgumentException("Transaction does not belong to this account", nameof(transaction));
+
+            transaction.Revert();
+            _transactions.Remove(transaction);
         }
 
         public IReadOnlyDictionary<decimal, double> InterestRates { get; }
