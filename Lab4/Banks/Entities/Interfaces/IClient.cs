@@ -4,7 +4,7 @@ namespace Banks.Entities.Interfaces
     {
         string Name { get; }
         string Surname { get; }
-        string? Address { get; }
-        string? Passport { get; }
+        string Address { get; }
+        string Passport { get; }
     }
 }
