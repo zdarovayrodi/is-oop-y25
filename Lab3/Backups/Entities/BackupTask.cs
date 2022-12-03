@@ -49,14 +49,12 @@ namespace Backups.Entities
         public IRestorePoint CreateRestorePoint(string restorePointName)
         {
             int id = _idFactory.NextId;
-            if (!Directory.Exists(FullPath))
-                Directory.CreateDirectory(FullPath);
+            _repository.CreateDirectory(Path.Combine(FullPath, id.ToString()));
             if (string.IsNullOrEmpty(restorePointName))
                 restorePointName = $"RestorePoint_{id}";
-            if (!Directory.Exists(Path.Combine(FullPath, restorePointName)))
-                Directory.CreateDirectory(Path.Combine(FullPath, restorePointName));
+            _repository.CreateDirectory(Path.Combine(FullPath, restorePointName));
             IRestorePoint restorePoint = new RestorePoint(restorePointName + id, _backupObjects);
-            Algorithm.Compress(this, restorePoint, id);
+            Algorithm.Compress(this, restorePoint, id, _repository);
 
             // byte[] compressedData = Algorithm.Compress(this, restorePoint, id);
             // _repository.Write($"{FullPath}{restorePointName} {id}.zip", compressedData);

@@ -4,6 +4,6 @@ namespace Backups.Models
 
     public interface IAlgorithm
     {
-        void Compress(IBackupTask backupTask, IRestorePoint restorePoint, int id);
+        void Compress(IBackupTask backupTask, IRestorePoint restorePoint, int id, IRepository repository);
     }
 }

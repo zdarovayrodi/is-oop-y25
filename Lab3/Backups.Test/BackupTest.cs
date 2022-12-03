@@ -1,20 +1,21 @@
-using Backups.Models;
-
 namespace Backups.Test
 {
+    using System;
     using Backups.Entities;
+    using Backups.Models;
     using Xunit;
 
     public class BackupTest
     {
-        [Fact(Skip = "Local file system doesn't work on GH")]
+        [Fact]
         public void SingleStorageTest()
         {
+            var repository = new MockRepository();
             IBackupTask backupTask = new BackupTask(
                 "testBackup/",
                 new SingleStorageAlgorithm(),
                 "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/",
-                new Repository());
+                repository);
 
             IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt");
             IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt");
@@ -41,14 +42,15 @@ namespace Backups.Test
             Assert.Equal(3, totalStoragesCount);
         }
 
-        [Fact(Skip = "Local file system doesn't work on GH")]
+        [Fact]
         public void SplitStorageTest()
         {
+            var repository = new MockRepository();
             IBackupTask backupTask = new BackupTask(
                 "testBackup/",
                 new SplitStorageAlgorithm(),
                 "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt",
-                new Repository());
+                repository);
 
             IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt");
             IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt");
