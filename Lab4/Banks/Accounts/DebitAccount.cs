@@ -25,22 +25,45 @@ namespace Banks.Accounts
 
         public Transaction Transfer(IAccount account, decimal amount)
         {
-            throw new NotImplementedException();
+            if (account == null) throw new ArgumentNullException("Account can't be null");
+            if (amount <= 0) throw new ArgumentException("Amount must be positive");
+            if (Balance < amount) throw new ArgumentException("Not enough money on account");
+
+            var transaction = new Transaction(this, account, amount);
+            Balance -= amount;
+            account.Deposit(amount);
+            _transactions.Add(transaction);
+            return transaction;
         }
 
         Transaction IAccount.Withdraw(decimal amount)
         {
-            throw new NotImplementedException();
+            if (amount <= 0) throw new ArgumentException("Amount must be positive");
+            if (Balance < amount) throw new ArgumentException("Not enough money on account");
+
+            var transaction = new Transaction(this, null, amount);
+            Balance -= amount;
+            _transactions.Add(transaction);
+            return transaction;
         }
 
         public Transaction Deposit(decimal amount)
         {
-            throw new NotImplementedException();
+            if (amount <= 0) throw new ArgumentException("Amount must be positive");
+
+            var transaction = new Transaction(null, this, amount);
+            Balance += amount;
+            _transactions.Add(transaction);
+            return transaction;
         }
 
         public void RevertTransaction(Transaction transaction)
         {
-            throw new NotImplementedException();
+            if (transaction == null) throw new ArgumentNullException("Transaction can't be null");
+            if (!_transactions.Contains(transaction)) throw new ArgumentException("Transaction not found");
+
+            transaction.Revert();
+            _transactions.Remove(transaction);
         }
 
         public void Withdraw(decimal amount)
