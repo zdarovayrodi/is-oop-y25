@@ -1,23 +1,29 @@
 namespace Banks.Accounts
 {
+    using Banks.Accounts.Interfaces;
     using Banks.Entities.Interfaces;
 
-    public abstract class CreditAccount : IAccount
+    public class CreditAccount : ICreditAccount
     {
-        protected CreditAccount(IClient client, decimal comission)
+        public CreditAccount(IClient client, decimal creditLimit, decimal fixedCommission)
         {
-            Client = client;
-            Comission = comission;
+            if (creditLimit < 0)
+                throw new ArgumentOutOfRangeException("Credit limit can't be negative");
+            if (fixedCommission < 0)
+                throw new ArgumentOutOfRangeException("Fixed commission can't be negative");
+            Client = client ?? throw new ArgumentNullException("Client can't be null");
+            CreditLimit = creditLimit;
+            FixedCommission = fixedCommission;
         }
 
         public IClient Client { get; }
-        public decimal Comission { get; }
-        public decimal CreditLimit { get; private set; }
-
-        public abstract void Transfer(IAccount account, decimal amount);
-        public void SetCreditLimit(decimal amount)
+        public decimal Balance { get; private set; } = 0;
+        public decimal CreditLimit { get; }
+        public decimal FixedCommission { get; }
+        public void ApplyDailyCommission()
         {
-            CreditLimit = amount;
+            if (Balance < 0 && Balance > -CreditLimit)
+                Balance -= FixedCommission;
         }
     }
 }
