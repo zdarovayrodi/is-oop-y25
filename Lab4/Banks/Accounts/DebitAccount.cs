@@ -28,6 +28,8 @@ namespace Banks.Accounts
             if (account == null) throw new ArgumentNullException("Account can't be null");
             if (amount <= 0) throw new ArgumentException("Amount must be positive");
             if (Balance < amount) throw new ArgumentException("Not enough money on account");
+            if (account == this)
+                throw new InvalidOperationException("Can't transfer money to the same account");
 
             var transaction = new Transaction(this, account, amount);
             Balance -= amount;
@@ -36,7 +38,7 @@ namespace Banks.Accounts
             return transaction;
         }
 
-        Transaction IAccount.Withdraw(decimal amount)
+        public Transaction Withdraw(decimal amount)
         {
             if (amount <= 0) throw new ArgumentException("Amount must be positive");
             if (Balance < amount) throw new ArgumentException("Not enough money on account");
@@ -64,13 +66,6 @@ namespace Banks.Accounts
 
             transaction.Revert();
             _transactions.Remove(transaction);
-        }
-
-        public void Withdraw(decimal amount)
-        {
-            if (amount > Balance) throw new InvalidOperationException("Insufficient funds");
-            if (amount <= 0) throw new InvalidOperationException("Amount must be positive");
-            Balance -= amount;
         }
 
         public void CalculateDailyInterest()

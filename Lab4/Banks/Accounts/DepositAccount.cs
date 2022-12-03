@@ -30,6 +30,8 @@ namespace Banks.Accounts
             if (account == null) throw new ArgumentNullException(nameof(account));
             if (amount <= 0) throw new ArgumentException("Amount must be positive", nameof(amount));
             if (Balance < amount) throw new ArgumentException("Insufficient funds", nameof(amount));
+            if (account == this)
+                throw new InvalidOperationException("Can't transfer money to the same account");
 
             Balance -= amount;
             account.Deposit(amount);
