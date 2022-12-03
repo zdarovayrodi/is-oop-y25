@@ -7,8 +7,10 @@ namespace Banks.Accounts.Interfaces
     {
         IClient Client { get; }
         decimal Balance { get; }
-        Trasaction Transfer(IAccount account, decimal amount);
-        Trasaction Withdraw(decimal amount);
-        Trasaction Deposit(decimal amount);
+        IReadOnlyList<Transaction> Transactions { get; }
+        Transaction Transfer(IAccount account, decimal amount);
+        Transaction Withdraw(decimal amount);
+        Transaction Deposit(decimal amount);
+        void RevertTransaction(Transaction transaction);
     }
 }
