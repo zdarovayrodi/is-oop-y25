@@ -4,7 +4,6 @@ namespace Backups.Models
     {
         public Storage(string originalPath, string backupPath, byte[] bytes)
         {
-            if (!Directory.Exists(originalPath) && !File.Exists(originalPath)) throw new ArgumentException("Path is not valid");
             OriginalPath = originalPath;
             BackupPath = backupPath;
             Bytes = bytes;

@@ -15,7 +15,7 @@ namespace Backups.Models
             foreach (var backupObject in restorePoint.BackupObjects)
             {
                 repository.CreateEntryFromFile(backupObject.FullPath, $"{backupObject.Name}_{id}.{backupObject.Extension}");
-                var storage = new Storage(backupObject.FullPath, zipPath, File.ReadAllBytes(backupObject.FullPath));
+                var storage = new Storage(backupObject.FullPath, zipPath, repository.GetFile(backupObject.FullPath));
                 restorePoint.AddStorage(storage);
             }
 

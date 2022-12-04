@@ -17,8 +17,8 @@ namespace Backups.Test
                 "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/",
                 repository);
 
-            IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt");
-            IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt");
+            IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt", repository);
+            IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt", repository);
 
             backupTask.AddBackupObject(backupObject1);
             backupTask.AddBackupObject(backupObject2);
@@ -52,8 +52,8 @@ namespace Backups.Test
                 "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt",
                 repository);
 
-            IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt");
-            IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt");
+            IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt", repository);
+            IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt", repository);
 
             backupTask.AddBackupObject(backupObject1);
             backupTask.AddBackupObject(backupObject2);

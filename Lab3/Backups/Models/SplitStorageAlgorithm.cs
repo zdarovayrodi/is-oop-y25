@@ -18,7 +18,7 @@ namespace Backups.Models
                 repository.OpenArchive(zipPath);
                 repository.CreateEntryFromFile(backupObject.FullPath, backupObject.Name);
                 repository.Dispose();
-                var storage = new Storage(backupObject.FullPath, zipPath, File.ReadAllBytes(backupObject.FullPath));
+                var storage = new Storage(backupObject.FullPath, zipPath, repository.GetFile(backupObject.FullPath));
                 restorePoint.AddStorage(storage);
             }
         }

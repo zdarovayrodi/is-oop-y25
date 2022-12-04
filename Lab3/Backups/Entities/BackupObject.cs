@@ -4,13 +4,14 @@ namespace Backups.Entities
     public class BackupObject : IBackupObject
     {
         private static IRepository _repository = new Repository();
-        public BackupObject(string name, string extension, string fullPath)
+        public BackupObject(string name, string extension, string fullPath, IRepository repository)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(fullPath))
                 throw new BackupObjectException("Null or empty error");
             Name = name;
             FullPath = fullPath;
             Extension = extension;
+            _repository = repository;
             FileBytes = _repository.GetFile(fullPath);
         }
 
