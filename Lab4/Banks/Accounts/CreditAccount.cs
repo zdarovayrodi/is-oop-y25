@@ -67,7 +67,7 @@ namespace Banks.Accounts
 
         public decimal CreditLimit { get; }
         public decimal FixedCommission { get; }
-        public void ApplyDailyCommission()
+        public void ApplyDailyInterest()
         {
             if (Balance < 0 && Balance > -CreditLimit)
                 Balance -= FixedCommission;

@@ -45,5 +45,29 @@ namespace Banks.Entities
 
             // _debitAccounts.Add(DebitAccount(client, DebitInterestRate));
         }
+
+        public void ApplyInterests()
+        {
+            foreach (DebitAccount account in _debitAccounts)
+                account.ApplyInterest();
+            foreach (DepositAccount account in _depositAccounts)
+                account.ApplyMonthlyInterest();
+        }
+
+        public void CalculateDailyDebitAccountsInterest()
+        {
+            foreach (var account in _debitAccounts)
+            {
+                account.CalculateDailyInterest();
+            }
+        }
+
+        public void CalculateDailyCreditAccountsInterest()
+        {
+            foreach (var account in _creditAccounts)
+            {
+                account.ApplyDailyInterest();
+            }
+        }
     }
 }
