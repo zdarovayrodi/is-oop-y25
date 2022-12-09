@@ -12,7 +12,7 @@ namespace Banks.Entities
         private List<CreditAccount> _creditAccounts = new List<CreditAccount>();
         private List<DebitAccount> _debitAccounts = new List<DebitAccount>();
         private List<DepositAccount> _depositAccounts = new List<DepositAccount>();
-        private List<DepositInterestRates> _depositInterestRates = new List<DepositInterestRates>();
+        private List<DepositInterestRates> _depositInterestRates;
 
         public Bank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
         {
@@ -41,9 +41,39 @@ namespace Banks.Entities
         {
             if (client == null)
                 throw new BankException("Client is null");
+            if (_clients.Contains(client))
+                throw new BankException("Client already exists");
             _clients.Add(client);
 
-            // _debitAccounts.Add(DebitAccount(client, DebitInterestRate));
+            _debitAccounts.Add(new DebitAccount(client, DebitInterestRate));
+        }
+
+        public CreditAccount CreateCreditAccount(IClient client, decimal creditLimit, decimal fixedInterestRate)
+        {
+            if (client == null)
+                throw new BankException("Client is null");
+            if (creditLimit <= 0)
+                throw new BankException("Credit limit cannot be less or equal to zero");
+            if (!_clients.Contains(client))
+                throw new BankException("Client does not exist");
+
+            var creditAccount = new CreditAccount(client, creditLimit, fixedInterestRate);
+            _creditAccounts.Add(creditAccount);
+            return creditAccount;
+        }
+
+        public DepositAccount CreateDepositAccount(IClient client, decimal balance, DateOnly endDate)
+        {
+            if (client == null)
+                throw new BankException("Client is null");
+            if (balance <= 0)
+                throw new BankException("Amount cannot be less or equal to zero");
+            if (!_clients.Contains(client))
+                throw new BankException("Client does not exist");
+
+            var depositAccount = new DepositAccount(client, DepositInterestRates, balance, endDate);
+            _depositAccounts.Add(depositAccount);
+            return depositAccount;
         }
 
         public void ApplyInterests()

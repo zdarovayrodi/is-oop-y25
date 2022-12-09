@@ -8,7 +8,7 @@ namespace Banks.Accounts
     {
         private List<Transaction> _transactions = new List<Transaction>();
 
-        public DepositAccount(IClient client, Dictionary<decimal, double> interestRates, decimal balance, DateOnly endDate)
+        public DepositAccount(IClient client, IReadOnlyList<DepositInterestRates> interestRates, decimal balance, DateOnly endDate)
         {
             if (interestRates == null) throw new ArgumentNullException(nameof(interestRates));
             if (interestRates.Count == 0) throw new ArgumentException("Interest rates cannot be empty", nameof(interestRates));
@@ -66,19 +66,19 @@ namespace Banks.Accounts
             _transactions.Remove(transaction);
         }
 
-        public IReadOnlyDictionary<decimal, double> InterestRates { get; }
+        public IReadOnlyList<DepositInterestRates> InterestRates { get; }
         public DateOnly EndDate { get; }
         public void ApplyMonthlyInterest()
         {
             Balance += Balance * (decimal)CurrentInterestRate();
         }
 
-        private double CurrentInterestRate()
+        private decimal CurrentInterestRate()
         {
-            double currentInterestRate = 0;
-            foreach (var interestRate in InterestRates)
+            decimal currentInterestRate = 0;
+            foreach (DepositInterestRates interestRate in InterestRates)
             {
-                if (Balance >= interestRate.Key) currentInterestRate = interestRate.Value;
+                if (Balance >= interestRate.Money) currentInterestRate = interestRate.InterestRate;
             }
 
             return currentInterestRate / 12;

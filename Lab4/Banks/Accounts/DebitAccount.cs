@@ -8,8 +8,8 @@ namespace Banks.Accounts
     {
         private List<Transaction> _transactions = new List<Transaction>();
 
-        private double _appliedInterestBalance = 0;
-        public DebitAccount(IClient client, double interestRate = 0)
+        private decimal _appliedInterestBalance = 0;
+        public DebitAccount(IClient client, decimal interestRate = 0)
         {
             if (interestRate < 0)
                 throw new ArgumentException("Interest rate cannot be negative");
@@ -21,7 +21,7 @@ namespace Banks.Accounts
         public IClient Client { get; }
         public decimal Balance { get; private set; } = 0;
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
-        public double InterestRate { get; } = 0;
+        public decimal InterestRate { get; } = 0;
 
         public Transaction Transfer(IAccount account, decimal amount)
         {
@@ -70,15 +70,15 @@ namespace Banks.Accounts
 
         public void CalculateDailyInterest()
         {
-            _appliedInterestBalance += (double)Balance * DailyInterestRate;
+            _appliedInterestBalance += Balance * DailyInterestRate;
         }
 
         public void ApplyInterest()
         {
-            Balance += (decimal)_appliedInterestBalance;
+            Balance += _appliedInterestBalance;
             _appliedInterestBalance = 0;
         }
 
-        private double DailyInterestRate => InterestRate / 365;
+        private decimal DailyInterestRate => InterestRate / 365;
     }
 }
