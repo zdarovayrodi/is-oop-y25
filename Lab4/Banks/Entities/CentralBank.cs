@@ -5,11 +5,11 @@ namespace Banks.Entities
 
     public class CentralBank : ICentralBank
     {
-        private List<IBank> _banks = new List<IBank>();
+        private List<Bank> _banks = new List<Bank>();
 
-        public IBank CreateBank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
+        public Bank CreateBank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
         {
-            IBank bank = new Bank(name, depositRates, debitRate);
+            Bank bank = new Bank(name, depositRates, debitRate);
             _banks.Add(bank);
             return bank;
         }
@@ -20,7 +20,13 @@ namespace Banks.Entities
             {
                 foreach (var bank in _banks)
                 {
-                    // TODO: placeholder for bank's monthly operations
+                    for (int j = 0; j < 30; j++)
+                    {
+                        bank.CalculateDailyDebitAccountsInterest();
+                        bank.CalculateDailyCreditAccountsInterest();
+                    }
+
+                    bank.ApplyInterests();
                 }
             }
         }
