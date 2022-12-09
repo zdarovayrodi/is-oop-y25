@@ -5,14 +5,16 @@ namespace Banks.Entities
     using Banks.Accounts;
     using Banks.Entities.Interfaces;
     using Banks.Exceptions;
+    using Banks.Observer;
 
-    public class Bank : IBank
+    public class Bank : IObservable
     {
         private List<IClient> _clients = new List<IClient>();
         private List<CreditAccount> _creditAccounts = new List<CreditAccount>();
         private List<DebitAccount> _debitAccounts = new List<DebitAccount>();
         private List<DepositAccount> _depositAccounts = new List<DepositAccount>();
         private List<DepositInterestRates> _depositInterestRates;
+        private List<IObserver> _observers = new List<IObserver>();
 
         public Bank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
         {
@@ -97,6 +99,23 @@ namespace Banks.Entities
             foreach (var account in _creditAccounts)
             {
                 account.ApplyDailyInterest();
+            }
+        }
+
+        public void AddObserver(IObserver observer)
+        {
+            if (observer == null)
+                throw new ObserverException("Observer is null");
+            if (_observers.Contains(observer))
+                throw new ObserverException("Observer already exists");
+            _observers.Add(observer);
+        }
+
+        public void NotifyObservers()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.Update(this);
             }
         }
     }
