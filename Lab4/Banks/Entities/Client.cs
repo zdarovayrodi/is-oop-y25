@@ -1,9 +1,11 @@
 namespace Banks.Entities
 {
     using Banks.Entities.Interfaces;
+    using Banks.Observer;
 
-    public class Client : IClient
+    public class Client : IObserver
     {
+        private List<string> _updates = new List<string>();
         public Client(string name, string surname, string address = "", string passport = "")
         {
             Name = name;
@@ -29,6 +31,11 @@ namespace Banks.Entities
             if (string.IsNullOrEmpty(passport) || string.IsNullOrWhiteSpace(passport))
                 throw new ArgumentException("Passport cannot be null or empty");
             Passport = passport;
+        }
+
+        public void Update(string message)
+        {
+            _updates.Add(message);
         }
     }
 }
