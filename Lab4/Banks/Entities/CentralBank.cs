@@ -1,8 +1,7 @@
-using Banks.Models;
-
 namespace Banks.Entities
 {
     using Banks.Entities.Interfaces;
+    using Banks.Models;
 
     public class CentralBank : ICentralBank
     {

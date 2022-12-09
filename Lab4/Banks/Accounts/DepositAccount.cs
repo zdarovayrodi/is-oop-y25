@@ -24,6 +24,8 @@ namespace Banks.Accounts
         public IClient Client { get; }
         public decimal Balance { get; private set; }
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
+        public IReadOnlyList<DepositInterestRates> InterestRates { get; }
+        public DateOnly EndDate { get; }
 
         public Transaction Transfer(IAccount account, decimal amount)
         {
@@ -66,8 +68,6 @@ namespace Banks.Accounts
             _transactions.Remove(transaction);
         }
 
-        public IReadOnlyList<DepositInterestRates> InterestRates { get; }
-        public DateOnly EndDate { get; }
         public void ApplyMonthlyInterest()
         {
             Balance += Balance * (decimal)CurrentInterestRate();

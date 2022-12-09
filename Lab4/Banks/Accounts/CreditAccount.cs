@@ -21,6 +21,8 @@ namespace Banks.Accounts
         public IClient Client { get; }
         public decimal Balance { get; private set; } = 0;
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
+        public decimal CreditLimit { get; }
+        public decimal FixedCommission { get; }
         public Transaction Transfer(IAccount account, decimal amount)
         {
             if (account == null)
@@ -65,8 +67,6 @@ namespace Banks.Accounts
             throw new NotImplementedException();
         }
 
-        public decimal CreditLimit { get; }
-        public decimal FixedCommission { get; }
         public void ApplyDailyInterest()
         {
             if (Balance < 0 && Balance > -CreditLimit)

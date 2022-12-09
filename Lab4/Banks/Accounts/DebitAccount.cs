@@ -14,7 +14,6 @@ namespace Banks.Accounts
             if (interestRate < 0)
                 throw new ArgumentException("Interest rate cannot be negative");
             Client = client ?? throw new ArgumentNullException("Client can't be null");
-            Client = client;
             InterestRate = interestRate;
         }
 
@@ -22,6 +21,7 @@ namespace Banks.Accounts
         public decimal Balance { get; private set; } = 0;
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
         public decimal InterestRate { get; } = 0;
+        private decimal DailyInterestRate => InterestRate / 365;
 
         public Transaction Transfer(IAccount account, decimal amount)
         {
@@ -78,7 +78,5 @@ namespace Banks.Accounts
             Balance += _appliedInterestBalance;
             _appliedInterestBalance = 0;
         }
-
-        private decimal DailyInterestRate => InterestRate / 365;
     }
 }
