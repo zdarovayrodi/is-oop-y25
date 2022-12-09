@@ -1,3 +1,5 @@
+using Banks.Models;
+
 namespace Banks.Entities
 {
     using Banks.Entities.Interfaces;
@@ -6,9 +8,10 @@ namespace Banks.Entities
     {
         private List<IBank> _banks = new List<IBank>();
 
-        public IBank CreateBank(string name, Dictionary<decimal, decimal> depositRates, decimal debitRate)
+        public IBank CreateBank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
         {
             IBank bank = new Bank(name, depositRates, debitRate);
+            _banks.Add(bank);
             return bank;
         }
 

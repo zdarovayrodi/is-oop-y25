@@ -1,3 +1,5 @@
+using Banks.Models;
+
 namespace Banks.Entities
 {
     using Banks.Accounts;
@@ -10,9 +12,9 @@ namespace Banks.Entities
         private List<CreditAccount> _creditAccounts = new List<CreditAccount>();
         private List<DebitAccount> _debitAccounts = new List<DebitAccount>();
         private List<DepositAccount> _depositAccounts = new List<DepositAccount>();
-        private Dictionary<decimal, decimal> _depositInterestRates = new Dictionary<decimal, decimal>();
+        private List<DepositInterestRates> _depositInterestRates = new List<DepositInterestRates>();
 
-        public Bank(string name, Dictionary<decimal, decimal> depositRates, decimal debitRate)
+        public Bank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
         {
             if (string.IsNullOrEmpty(name))
                 throw new BankException("Bank name cannot be null or empty");
@@ -28,7 +30,7 @@ namespace Banks.Entities
 
         public string Name { get; }
 
-        public IReadOnlyDictionary<decimal, decimal> DepositInterestRates => _depositInterestRates;
+        public IReadOnlyList<DepositInterestRates> DepositInterestRates => _depositInterestRates.AsReadOnly();
         public decimal DebitInterestRate { get; }
         public IReadOnlyList<IClient> Clients => _clients.AsReadOnly();
         public IReadOnlyList<CreditAccount> CreditAccounts => _creditAccounts.AsReadOnly();
