@@ -24,7 +24,7 @@ namespace Banks.Accounts
         public Client Client { get; }
         public decimal Balance { get; private set; } = 0;
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
-        public decimal InterestRate { get; } = 0;
+        public decimal InterestRate { get; private set; } = 0;
         public decimal AvailableWithdrawalAmountIfSuspicious { get; }
         private decimal DailyInterestRate => InterestRate / 365;
 
@@ -84,6 +84,13 @@ namespace Banks.Accounts
         {
             Balance += _appliedInterestBalance;
             _appliedInterestBalance = 0;
+        }
+
+        public void UpdateInterestRate(decimal interestRate)
+        {
+            if (interestRate < 0) throw new ArgumentException("Interest rate cannot be negative");
+
+            InterestRate = interestRate;
         }
     }
 }

@@ -32,9 +32,8 @@ namespace Banks.Entities
         }
 
         public string Name { get; }
-
         public IReadOnlyList<DepositInterestRates> DepositInterestRates => _depositInterestRates.AsReadOnly();
-        public decimal DebitInterestRate { get; }
+        public decimal DebitInterestRate { get; private set; }
         public IReadOnlyList<Client> Clients => _clients.AsReadOnly();
         public IReadOnlyList<CreditAccount> CreditAccounts => _creditAccounts.AsReadOnly();
         public IReadOnlyList<DebitAccount> DebitAccounts => _debitAccounts.AsReadOnly();
@@ -102,6 +101,29 @@ namespace Banks.Entities
             {
                 account.ApplyDailyInterest();
             }
+        }
+
+        public void UpdateDepositInterestRates(List<DepositInterestRates> depositInterestRates)
+        {
+            if (depositInterestRates == null || depositInterestRates.Count == 0)
+                throw new BankException("Deposit interest rates cannot be null or empty");
+
+            _depositInterestRates = depositInterestRates;
+            NotifyObservers("Deposit interest rates have been updated");
+        }
+
+        public void UpdateDebitInterestRate(decimal debitInterestRate)
+        {
+            if (debitInterestRate < 0)
+                throw new BankException("Debit interest rate cannot be less than zero");
+
+            DebitInterestRate = debitInterestRate;
+            foreach (var account in _debitAccounts)
+            {
+                account.UpdateInterestRate(debitInterestRate);
+            }
+
+            NotifyObservers("Debit interest rate has been updated");
         }
 
         public void AddObserver(IObserver observer)

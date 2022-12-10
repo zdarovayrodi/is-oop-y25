@@ -27,7 +27,7 @@ namespace Banks.Accounts
         public Client Client { get; }
         public decimal Balance { get; private set; }
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
-        public IReadOnlyList<DepositInterestRates> InterestRates { get; }
+        public IReadOnlyList<DepositInterestRates> InterestRates { get; private set; }
         public DateOnly EndDate { get; }
         public decimal AvailableWithdrawalAmountIfSuspicious { get; }
 
@@ -77,6 +77,14 @@ namespace Banks.Accounts
         public void ApplyMonthlyInterest()
         {
             Balance += Balance * (decimal)CurrentInterestRate();
+        }
+
+        public void UpdateDepositInterestRates(IReadOnlyList<DepositInterestRates> interestRates)
+        {
+            if (interestRates == null) throw new ArgumentNullException(nameof(interestRates));
+            if (interestRates.Count == 0) throw new ArgumentException("Interest rates cannot be empty", nameof(interestRates));
+
+            InterestRates = interestRates;
         }
 
         private decimal CurrentInterestRate()
