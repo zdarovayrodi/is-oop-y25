@@ -21,7 +21,7 @@ namespace Banks.Test
             ratesList.Add(medInterest);
             ratesList.Add(highInterest);
             var debitRate = 10;
-            var testBank1 = centralBank.CreateBank("Test Bank 1", ratesList, debitRate);
+            var testBank1 = centralBank.CreateBank("Test Bank 1", ratesList, debitRate, 10000);
             var testClient1 = new Client("Test", "Testoviy");
             testBank1.AddClient(testClient1);
             Assert.Contains(testClient1, testBank1.Clients);
@@ -41,7 +41,7 @@ namespace Banks.Test
             ratesList.Add(medInterest);
             ratesList.Add(highInterest);
             var debitRate = 10;
-            var testBank1 = centralBank.CreateBank("Test Bank 1", ratesList, debitRate);
+            var testBank1 = centralBank.CreateBank("Test Bank 1", ratesList, debitRate, 10000);
             var testClient1 = new Client("Test", "Testoviy");
             var testClient2 = new Client("Test2", "Testoviy");
             testBank1.AddClient(testClient1);
