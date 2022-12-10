@@ -17,8 +17,8 @@ namespace Banks.Models
 
         public void Revert()
         {
-            From?.Withdraw(Amount);
-            To?.Deposit(Amount);
+            From?.Deposit(Amount);
+            To?.Withdraw(Amount);
         }
     }
 }
