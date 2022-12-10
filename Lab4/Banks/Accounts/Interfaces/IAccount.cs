@@ -1,11 +1,11 @@
 namespace Banks.Accounts.Interfaces
 {
-    using Banks.Entities.Interfaces;
+    using Banks.Entities;
     using Banks.Models;
 
     public interface IAccount
     {
-        IClient Client { get; }
+        Client Client { get; }
         decimal Balance { get; }
         IReadOnlyList<Transaction> Transactions { get; }
         Transaction Transfer(IAccount account, decimal amount);

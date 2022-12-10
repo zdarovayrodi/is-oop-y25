@@ -9,7 +9,7 @@ namespace Banks.Entities
 
     public class Bank : IObservable
     {
-        private List<IClient> _clients = new List<IClient>();
+        private List<Client> _clients = new List<Client>();
         private List<CreditAccount> _creditAccounts = new List<CreditAccount>();
         private List<DebitAccount> _debitAccounts = new List<DebitAccount>();
         private List<DepositAccount> _depositAccounts = new List<DepositAccount>();
@@ -34,12 +34,12 @@ namespace Banks.Entities
 
         public IReadOnlyList<DepositInterestRates> DepositInterestRates => _depositInterestRates.AsReadOnly();
         public decimal DebitInterestRate { get; }
-        public IReadOnlyList<IClient> Clients => _clients.AsReadOnly();
+        public IReadOnlyList<Client> Clients => _clients.AsReadOnly();
         public IReadOnlyList<CreditAccount> CreditAccounts => _creditAccounts.AsReadOnly();
         public IReadOnlyList<DebitAccount> DebitAccounts => _debitAccounts.AsReadOnly();
         public IReadOnlyList<DepositAccount> DepositAccounts => _depositAccounts.AsReadOnly();
 
-        public void AddClient(IClient client)
+        public void AddClient(Client client)
         {
             if (client == null)
                 throw new BankException("Client is null");
@@ -50,7 +50,7 @@ namespace Banks.Entities
             _debitAccounts.Add(new DebitAccount(client, DebitInterestRate));
         }
 
-        public CreditAccount CreateCreditAccount(IClient client, decimal creditLimit, decimal fixedInterestRate)
+        public CreditAccount CreateCreditAccount(Client client, decimal creditLimit, decimal fixedInterestRate)
         {
             if (client == null)
                 throw new BankException("Client is null");
@@ -64,7 +64,7 @@ namespace Banks.Entities
             return creditAccount;
         }
 
-        public DepositAccount CreateDepositAccount(IClient client, decimal balance, DateOnly endDate)
+        public DepositAccount CreateDepositAccount(Client client, decimal balance, DateOnly endDate)
         {
             if (client == null)
                 throw new BankException("Client is null");

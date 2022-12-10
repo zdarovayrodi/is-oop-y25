@@ -1,13 +1,13 @@
 namespace Banks.Accounts
 {
     using Banks.Accounts.Interfaces;
-    using Banks.Entities.Interfaces;
+    using Banks.Entities;
     using Banks.Models;
 
     public class CreditAccount : IAccount
     {
         private List<Transaction> _transactions = new List<Transaction>();
-        public CreditAccount(IClient client, decimal creditLimit, decimal fixedCommission)
+        public CreditAccount(Client client, decimal creditLimit, decimal fixedCommission)
         {
             if (creditLimit < 0)
                 throw new ArgumentOutOfRangeException("Credit limit can't be negative");
@@ -18,7 +18,7 @@ namespace Banks.Accounts
             FixedCommission = fixedCommission;
         }
 
-        public IClient Client { get; }
+        public Client Client { get; }
         public decimal Balance { get; private set; } = 0;
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
         public decimal CreditLimit { get; }

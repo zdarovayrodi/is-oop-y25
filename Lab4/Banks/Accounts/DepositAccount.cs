@@ -1,6 +1,7 @@
 namespace Banks.Accounts
 {
     using Banks.Accounts.Interfaces;
+    using Banks.Entities;
     using Banks.Entities.Interfaces;
     using Banks.Models;
 
@@ -8,7 +9,7 @@ namespace Banks.Accounts
     {
         private List<Transaction> _transactions = new List<Transaction>();
 
-        public DepositAccount(IClient client, IReadOnlyList<DepositInterestRates> interestRates, decimal balance, DateOnly endDate)
+        public DepositAccount(Client client, IReadOnlyList<DepositInterestRates> interestRates, decimal balance, DateOnly endDate)
         {
             if (interestRates == null) throw new ArgumentNullException(nameof(interestRates));
             if (interestRates.Count == 0) throw new ArgumentException("Interest rates cannot be empty", nameof(interestRates));
@@ -21,7 +22,7 @@ namespace Banks.Accounts
             EndDate = endDate;
         }
 
-        public IClient Client { get; }
+        public Client Client { get; }
         public decimal Balance { get; private set; }
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
         public IReadOnlyList<DepositInterestRates> InterestRates { get; }

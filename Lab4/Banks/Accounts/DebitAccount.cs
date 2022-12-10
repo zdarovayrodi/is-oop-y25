@@ -1,7 +1,7 @@
 namespace Banks.Accounts
 {
     using Banks.Accounts.Interfaces;
-    using Banks.Entities.Interfaces;
+    using Banks.Entities;
     using Banks.Models;
 
     public class DebitAccount : IAccount
@@ -9,7 +9,7 @@ namespace Banks.Accounts
         private List<Transaction> _transactions = new List<Transaction>();
 
         private decimal _appliedInterestBalance = 0;
-        public DebitAccount(IClient client, decimal interestRate = 0)
+        public DebitAccount(Client client, decimal interestRate = 0)
         {
             if (interestRate < 0)
                 throw new ArgumentException("Interest rate cannot be negative");
@@ -17,7 +17,7 @@ namespace Banks.Accounts
             InterestRate = interestRate;
         }
 
-        public IClient Client { get; }
+        public Client Client { get; }
         public decimal Balance { get; private set; } = 0;
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
         public decimal InterestRate { get; } = 0;
