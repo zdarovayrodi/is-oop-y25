@@ -7,15 +7,19 @@ namespace Banks.Accounts
     public class CreditAccount : IAccount
     {
         private List<Transaction> _transactions = new List<Transaction>();
-        public CreditAccount(Client client, decimal creditLimit, decimal fixedCommission)
+        public CreditAccount(Client client, decimal creditLimit, decimal fixedCommission, decimal availableWithdrawalAmountIfSuspicious)
         {
             if (creditLimit < 0)
                 throw new ArgumentOutOfRangeException("Credit limit can't be negative");
             if (fixedCommission < 0)
                 throw new ArgumentOutOfRangeException("Fixed commission can't be negative");
+            if (availableWithdrawalAmountIfSuspicious < 0)
+                throw new ArgumentOutOfRangeException("Available withdrawal amount if suspicious can't be negative");
+
             Client = client ?? throw new ArgumentNullException("Client can't be null");
             CreditLimit = creditLimit;
             FixedCommission = fixedCommission;
+            AvailableWithdrawalAmountIfSuspicious = availableWithdrawalAmountIfSuspicious;
         }
 
         public Client Client { get; }
@@ -23,16 +27,19 @@ namespace Banks.Accounts
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
         public decimal CreditLimit { get; }
         public decimal FixedCommission { get; }
+        public decimal AvailableWithdrawalAmountIfSuspicious { get; }
+
         public Transaction Transfer(IAccount account, decimal amount)
         {
-            if (account == null)
-                throw new ArgumentNullException("Account can't be null");
             if (amount < 0)
                 throw new ArgumentOutOfRangeException("Amount can't be negative");
             if (Balance - amount < -CreditLimit)
                 throw new InvalidOperationException("Not enough money on account");
             if (account == this)
                 throw new InvalidOperationException("Can't transfer money to the same account");
+            if (Client.IsSuspicious && account == null) throw new InvalidOperationException("Client is suspicious");
+            if (Client.IsSuspicious && amount > AvailableWithdrawalAmountIfSuspicious)
+                throw new InvalidOperationException("Client is suspicious");
 
             var transaction = new Transaction(this, account, amount);
             _transactions.Add(transaction);

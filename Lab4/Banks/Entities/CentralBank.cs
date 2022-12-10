@@ -7,9 +7,9 @@ namespace Banks.Entities
     {
         private List<Bank> _banks = new List<Bank>();
 
-        public Bank CreateBank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
+        public Bank CreateBank(string name, List<DepositInterestRates> depositRates, decimal debitRate, decimal avaliableSumIfSuspicious)
         {
-            Bank bank = new Bank(name, depositRates, debitRate);
+            Bank bank = new Bank(name, depositRates, debitRate, avaliableSumIfSuspicious);
             _banks.Add(bank);
             return bank;
         }

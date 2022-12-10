@@ -18,6 +18,7 @@ namespace Banks.Entities
         public string Surname { get; }
         public string Address { get; private set; }
         public string Passport { get; private set; }
+        public bool IsSuspicious => Address == string.Empty || Passport == string.Empty;
 
         public void SetAddress(string address)
         {

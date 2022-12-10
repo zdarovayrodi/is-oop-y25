@@ -16,7 +16,7 @@ namespace Banks.Entities
         private List<DepositInterestRates> _depositInterestRates;
         private List<IObserver> _observers = new List<IObserver>();
 
-        public Bank(string name, List<DepositInterestRates> depositRates, decimal debitRate)
+        public Bank(string name, List<DepositInterestRates> depositRates, decimal debitRate, decimal avaliableSumIfSuspicious)
         {
             if (string.IsNullOrEmpty(name))
                 throw new BankException("Bank name cannot be null or empty");
@@ -28,6 +28,7 @@ namespace Banks.Entities
             Name = name;
             _depositInterestRates = depositRates;
             DebitInterestRate = debitRate;
+            AvaliableSumIfSuspicious = avaliableSumIfSuspicious;
         }
 
         public string Name { get; }
@@ -38,6 +39,7 @@ namespace Banks.Entities
         public IReadOnlyList<CreditAccount> CreditAccounts => _creditAccounts.AsReadOnly();
         public IReadOnlyList<DebitAccount> DebitAccounts => _debitAccounts.AsReadOnly();
         public IReadOnlyList<DepositAccount> DepositAccounts => _depositAccounts.AsReadOnly();
+        public decimal AvaliableSumIfSuspicious { get; }
 
         public void AddClient(Client client)
         {
@@ -47,7 +49,7 @@ namespace Banks.Entities
                 throw new BankException("Client already exists");
             _clients.Add(client);
 
-            _debitAccounts.Add(new DebitAccount(client, DebitInterestRate));
+            _debitAccounts.Add(new DebitAccount(client, DebitInterestRate, AvaliableSumIfSuspicious));
         }
 
         public CreditAccount CreateCreditAccount(Client client, decimal creditLimit, decimal fixedInterestRate)
@@ -59,7 +61,7 @@ namespace Banks.Entities
             if (!_clients.Contains(client))
                 throw new BankException("Client does not exist");
 
-            var creditAccount = new CreditAccount(client, creditLimit, fixedInterestRate);
+            var creditAccount = new CreditAccount(client, creditLimit, fixedInterestRate, AvaliableSumIfSuspicious);
             _creditAccounts.Add(creditAccount);
             return creditAccount;
         }
@@ -73,7 +75,7 @@ namespace Banks.Entities
             if (!_clients.Contains(client))
                 throw new BankException("Client does not exist");
 
-            var depositAccount = new DepositAccount(client, DepositInterestRates, balance, endDate);
+            var depositAccount = new DepositAccount(client, DepositInterestRates, balance, endDate, AvaliableSumIfSuspicious);
             _depositAccounts.Add(depositAccount);
             return depositAccount;
         }

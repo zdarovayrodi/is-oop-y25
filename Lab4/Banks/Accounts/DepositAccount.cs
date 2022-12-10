@@ -9,13 +9,15 @@ namespace Banks.Accounts
     {
         private List<Transaction> _transactions = new List<Transaction>();
 
-        public DepositAccount(Client client, IReadOnlyList<DepositInterestRates> interestRates, decimal balance, DateOnly endDate)
+        public DepositAccount(Client client, IReadOnlyList<DepositInterestRates> interestRates, decimal balance, DateOnly endDate, decimal availableSumIfSupsicious)
         {
             if (interestRates == null) throw new ArgumentNullException(nameof(interestRates));
             if (interestRates.Count == 0) throw new ArgumentException("Interest rates cannot be empty", nameof(interestRates));
             if (balance < 0) throw new ArgumentException("Balance cannot be negative", nameof(balance));
             if (endDate < DateOnly.FromDateTime(DateTime.Today)) throw new ArgumentException("End date cannot be in the past", nameof(endDate));
+            if (availableSumIfSupsicious < 0) throw new ArgumentException("Available sum if suspicious cannot be negative", nameof(availableSumIfSupsicious));
 
+            AvailableWithdrawalAmountIfSuspicious = availableSumIfSupsicious;
             Client = client;
             InterestRates = interestRates;
             Balance = balance;
@@ -27,14 +29,17 @@ namespace Banks.Accounts
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
         public IReadOnlyList<DepositInterestRates> InterestRates { get; }
         public DateOnly EndDate { get; }
+        public decimal AvailableWithdrawalAmountIfSuspicious { get; }
 
         public Transaction Transfer(IAccount account, decimal amount)
         {
-            if (account == null) throw new ArgumentNullException(nameof(account));
             if (amount <= 0) throw new ArgumentException("Amount must be positive", nameof(amount));
             if (Balance < amount) throw new ArgumentException("Insufficient funds", nameof(amount));
             if (account == this)
                 throw new InvalidOperationException("Can't transfer money to the same account");
+            if (Client.IsSuspicious && account == null) throw new InvalidOperationException("Client is suspicious");
+            if (Client.IsSuspicious && amount > AvailableWithdrawalAmountIfSuspicious)
+                throw new InvalidOperationException("Client is suspicious");
 
             Balance -= amount;
             account.Deposit(amount);

@@ -9,11 +9,15 @@ namespace Banks.Accounts
         private List<Transaction> _transactions = new List<Transaction>();
 
         private decimal _appliedInterestBalance = 0;
-        public DebitAccount(Client client, decimal interestRate = 0)
+        public DebitAccount(Client client, decimal interestRate, decimal availableWithdrawalAmountIfSuspicious)
         {
             if (interestRate < 0)
                 throw new ArgumentException("Interest rate cannot be negative");
+            if (availableWithdrawalAmountIfSuspicious < 0)
+                throw new ArgumentException("Available withdrawal amount cannot be negative");
+
             Client = client ?? throw new ArgumentNullException("Client can't be null");
+            AvailableWithdrawalAmountIfSuspicious = availableWithdrawalAmountIfSuspicious;
             InterestRate = interestRate;
         }
 
@@ -21,15 +25,18 @@ namespace Banks.Accounts
         public decimal Balance { get; private set; } = 0;
         public IReadOnlyList<Transaction> Transactions => _transactions.AsReadOnly();
         public decimal InterestRate { get; } = 0;
+        public decimal AvailableWithdrawalAmountIfSuspicious { get; }
         private decimal DailyInterestRate => InterestRate / 365;
 
         public Transaction Transfer(IAccount account, decimal amount)
         {
-            if (account == null) throw new ArgumentNullException("Account can't be null");
             if (amount <= 0) throw new ArgumentException("Amount must be positive");
             if (Balance < amount) throw new ArgumentException("Not enough money on account");
             if (account == this)
                 throw new InvalidOperationException("Can't transfer money to the same account");
+            if (Client.IsSuspicious && account == null) throw new InvalidOperationException("Client is suspicious");
+            if (Client.IsSuspicious && amount > AvailableWithdrawalAmountIfSuspicious)
+                throw new InvalidOperationException("Client is suspicious");
 
             var transaction = new Transaction(this, account, amount);
             Balance -= amount;
