@@ -38,7 +38,7 @@
                         AnsiConsole.Ask<decimal>("Enter [yellow]medium[/] deposit interest rate");
                     var highDepositMoney = AnsiConsole.Ask<decimal>("Enter [red]high[/] deposit money");
                     var highDepositInterestRates =
-                        AnsiConsole.Ask<decimal>("Enter [yellow]high[/] deposit interest rate");
+                        AnsiConsole.Ask<decimal>("Enter [red]high[/] deposit interest rate");
                     var depositInterestRates = new List<DepositInterestRates>
                     {
                         new DepositInterestRates(lowDepositMoney, lowDepositInterestRates),
