@@ -18,24 +18,20 @@ public class BackupTaskDecorator : IBackupTask
         string backupFullFullPath,
         IRepository repository,
         IReadOnlyList<IRestorePoint> restorePoints,
-        string name,
-        string fullPath,
         MergeAlgorithm mergeAlgorithm,
         ILogger logger)
     {
         _backupTask = new BackupTask(backupName, algorithm, backupFullFullPath, repository);
         Algorithm = algorithm;
         RestorePoints = restorePoints;
-        Name = name;
-        FullPath = fullPath;
         _mergeAlgorithm = mergeAlgorithm;
         _logger = new Logger.Logger(logger);
     }
 
     public IReadOnlyList<IRestorePoint> RestorePoints { get; }
     public IAlgorithm Algorithm { get; }
-    public string Name { get; }
-    public string FullPath { get; }
+    public string Name { get => _backupTask.Name; }
+    public string FullPath { get => _backupTask.FullPath; }
     public void AddBackupObject(IBackupObject backupObject)
     {
         _backupTask.AddBackupObject(backupObject);
