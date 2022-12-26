@@ -43,17 +43,4 @@ public class Saver<T>
         });
         if (JsonPath != null) File.WriteAllText(JsonPath, json);
     }
-
-    // public T Load()
-    // {
-    //     var json = File.ReadAllText(JsonPath);
-    //     return JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
-    //     {
-    //         TypeNameHandling = TypeNameHandling.Auto,
-    //         NullValueHandling = NullValueHandling.Ignore,
-    //         MissingMemberHandling = MissingMemberHandling.Ignore,
-    //         DefaultValueHandling = DefaultValueHandling.Ignore,
-    //         Formatting = Formatting.Indented,
-    //     });
-    // }
 }
