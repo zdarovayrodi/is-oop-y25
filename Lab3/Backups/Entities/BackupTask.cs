@@ -62,6 +62,13 @@ namespace Backups.Entities
             return restorePoint;
         }
 
+        public IRestorePoint AddRestorePoint(IRestorePoint restorePoint)
+        {
+            if (restorePoint == null) throw new BackupException("Restore point cannot be null");
+            _restorePoints.Add(restorePoint);
+            return restorePoint;
+        }
+
         public void DeleteRestorePoint(IRestorePoint restorePoint)
         {
             if (restorePoint == null) throw new BackupException("Restore point cannot be null");

@@ -3,7 +3,7 @@ namespace Backups.Entities
     using Backups.Exceptions;
     public class BackupObject : IBackupObject
     {
-        private static IRepository _repository = new Repository();
+        private IRepository _repository;
         public BackupObject(string name, string extension, string fullPath, IRepository repository)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(fullPath))

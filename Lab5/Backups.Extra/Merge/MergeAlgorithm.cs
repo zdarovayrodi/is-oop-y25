@@ -6,11 +6,12 @@ namespace Backups.Extra.Merge;
 
 public class MergeAlgorithm
 {
-    public IRestorePoint Merge(BackupTaskDecorator backupTaskDecorator, IRestorePoint oldRestorePoint, IRestorePoint newRestorePoint)
+    public static IRestorePoint Merge(BackupTaskDecorator backupTaskDecorator, IRestorePoint oldRestorePoint, IRestorePoint newRestorePoint)
     {
         if (backupTaskDecorator.Algorithm == new SingleStorageAlgorithm())
         {
             backupTaskDecorator.DeleteRestorePoint(oldRestorePoint);
+            backupTaskDecorator.AddRestorePoint(newRestorePoint);
             return newRestorePoint;
         }
 
@@ -25,6 +26,6 @@ public class MergeAlgorithm
 
         backupTaskDecorator.DeleteRestorePoint(oldRestorePoint);
         backupTaskDecorator.DeleteRestorePoint(newRestorePoint);
-        return new RestorePoint($"{newRestorePoint.Name}_merged", mergedFiles);
+        return backupTaskDecorator.AddRestorePoint(new RestorePoint($"{newRestorePoint.Name}_merged", mergedFiles));
     }
 }
