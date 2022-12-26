@@ -1,74 +1,79 @@
-using Backups.Entities;
-using Backups.Extra.Entities;
-using Backups.Extra.Logger;
-using Backups.Extra.Merge;
-using Backups.Extra.Repository;
-using Backups.Extra.Saver;
-using Backups.Models;
-using Xunit;
-
-namespace Backups.Extra.Test;
-
-public class Test
 {
-    [Fact]
-    public void TestCanMergeRestorePoints()
+  "RestorePoints": [
     {
-        var repository = new ExtraMockRepository("aotuhsnohe");
-        BackupTaskDecorator backupTask = new BackupTaskDecorator(
-            "test",
-            new SplitStorageAlgorithm(),
-            "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/",
-            repository,
-            new ConsoleLogger());
-        IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt", repository);
-        IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt", repository);
-
-        backupTask.AddBackupObject(backupObject1);
-        backupTask.AddBackupObject(backupObject2);
-
-        backupTask.CreateRestorePoint("TestFIRST");
-        Assert.Equal(1, backupTask.RestorePoints.Count);
-        Assert.Equal(2, backupTask.RestorePoints[0].Storages.Count);
-
-        backupTask.CreateRestorePoint("TestSECOND");
-        Assert.Equal(2, backupTask.RestorePoints.Count);
-        Assert.Equal(2, backupTask.RestorePoints[1].Storages.Count);
-
-        MergeAlgorithm.Merge(backupTask, backupTask.RestorePoints[0], backupTask.RestorePoints[1]);
-        Assert.Equal(1, backupTask.RestorePoints.Count);
-    }
-
-    [Fact]
-    public void CanSaveBackupTaskState()
+      "$type": "Backups.Models.RestorePoint, Backups",
+      "CreationDate": "2022-12-26T18:49:17.206021+03:00",
+      "Name": "TestFIRST0",
+      "BackupObjects": [
+        {
+          "$type": "Backups.Entities.BackupObject, Backups",
+          "Name": "File",
+          "Extension": "txt",
+          "FullPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt",
+          "FileBytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "$type": "Backups.Entities.BackupObject, Backups",
+          "Name": "File1",
+          "Extension": "txt",
+          "FullPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt",
+          "FileBytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ],
+      "Storages": [
+        {
+          "$type": "Backups.Models.Storage, Backups",
+          "OriginalPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt",
+          "BackupPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/TestFIRST0/File_0.zip",
+          "Bytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "$type": "Backups.Models.Storage, Backups",
+          "OriginalPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt",
+          "BackupPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/TestFIRST0/File1_0.zip",
+          "Bytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
+    },
     {
-        ExtraMockRepository rep = new ExtraMockRepository("seuonhu");
-
-        BackupTaskDecorator backupTask = new BackupTaskDecorator(
-            "test",
-            new SplitStorageAlgorithm(),
-            "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/",
-            rep,
-            new ConsoleLogger());
-
-        IBackupObject backupObject1 = new BackupObject("File", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt", rep);
-        IBackupObject backupObject2 = new BackupObject("File1", "txt", "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt", rep);
-
-        backupTask.AddBackupObject(backupObject1);
-        backupTask.AddBackupObject(backupObject2);
-
-        backupTask.CreateRestorePoint("TestFIRST");
-        Assert.Equal(1, backupTask.RestorePoints.Count);
-        Assert.Equal(2, backupTask.RestorePoints[0].Storages.Count);
-
-        backupTask.CreateRestorePoint("TestSECOND");
-        Assert.Equal(2, backupTask.RestorePoints.Count);
-        Assert.Equal(2, backupTask.RestorePoints[1].Storages.Count);
-
-        Saver<BackupTaskDecorator> saver = new Saver<BackupTaskDecorator>("/Users/zdarovayrodi/Documents/itmo-oop/Lab5/Backups.Extra.Test/backupObject.json", backupTask);
-        saver.Save();
-
-        // BackupTaskDecorator backupTask2 = Saver<BackupTaskDecorator>.Load();
-        // Assert.Equal(2, backupTask2.RestorePoints.Count);
+      "$type": "Backups.Models.RestorePoint, Backups",
+      "CreationDate": "2022-12-26T18:49:17.210238+03:00",
+      "Name": "TestSECOND1",
+      "BackupObjects": [
+        {
+          "$type": "Backups.Entities.BackupObject, Backups",
+          "Name": "File",
+          "Extension": "txt",
+          "FullPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt",
+          "FileBytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "$type": "Backups.Entities.BackupObject, Backups",
+          "Name": "File1",
+          "Extension": "txt",
+          "FullPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt",
+          "FileBytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ],
+      "Storages": [
+        {
+          "$type": "Backups.Models.Storage, Backups",
+          "OriginalPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File.txt",
+          "BackupPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/TestSECOND1/File_1.zip",
+          "Bytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        },
+        {
+          "$type": "Backups.Models.Storage, Backups",
+          "OriginalPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/File1.txt",
+          "BackupPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/TestSECOND1/File1_1.zip",
+          "Bytes": "AAAAAAAAAAAAAAAAAAAAAA=="
+        }
+      ]
     }
+  ],
+  "Algorithm": {
+    "$type": "Backups.Models.SplitStorageAlgorithm, Backups"
+  },
+  "Name": "test",
+  "FullPath": "/Users/zdarovayrodi/Documents/itmo-oop/Lab3/Backups.Test/TestFiles/"
 }

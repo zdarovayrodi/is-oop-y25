@@ -41,6 +41,6 @@ public class Saver<T>
             DefaultValueHandling = DefaultValueHandling.Ignore,
             Formatting = Formatting.Indented,
         });
-        if (JsonPath != null) File.WriteAllText(JsonPath, json);
+        if (JsonPath != null) File.WriteAllText(Path.GetFullPath(JsonPath), json);
     }
 }
