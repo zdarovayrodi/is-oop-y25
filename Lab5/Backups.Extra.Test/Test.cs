@@ -65,7 +65,7 @@ public class Test
         Assert.Equal(2, backupTask.RestorePoints.Count);
         Assert.Equal(2, backupTask.RestorePoints[1].Storages.Count);
 
-        Saver<BackupTaskDecorator> saver = new Saver<BackupTaskDecorator>("../../../../Backups.Extra.Test/backupObject.cs", backupTask);
+        Saver<BackupTaskDecorator> saver = new Saver<BackupTaskDecorator>("../../../../Backups.Extra.Test/backupObject.json", backupTask);
         saver.Save();
 
         // BackupTaskDecorator backupTask2 = Saver<BackupTaskDecorator>.Load();
