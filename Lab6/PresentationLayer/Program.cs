@@ -1,4 +1,5 @@
 ﻿using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace PresentationLayer
 {
@@ -8,31 +9,42 @@ namespace PresentationLayer
         {
             while (true)
             {
-                var menu = new Menu()
-                    .Add("Register an account", () => RegisterAnAccount())
-                    .Add("Log in", () => Authentification())
-                    .Add("Exit", () => Environment.Exit(0));
-
-                AnsiConsole.Render(menu);
-                AnsiConsole.MarkupLine("Choose an option [bold green]from the menu[/] above");
-                AnsiConsole.Prompt(menu);
+                AnsiConsole.Clear();
+                
+                var menu = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .PageSize(10)
+                        .AddChoices(new[]
+                            { "Register an account", "Log in", "Exit" }));
+                
+                switch (menu) {
+                    case "Register an account":
+                        RegisterAnAccount();
+                        break;
+                    case "Log in":
+                        Authentification();
+                        break;
+                    case "Exit":
+                        return;
+                }
             }
         }
 
         private static void RegisterAnAccount()
         {
-            throw new NotImplementedException();
+            var username = AnsiConsole.Ask<string>("Enter your username");
+            var password = AnsiConsole.Ask<string>("Enter your password");
+            var confirmPassword = AnsiConsole.Ask<string>("Confirm your password");
+            if (password != confirmPassword)
+            {
+                AnsiConsole.MarkupLine("[red]Passwords do not match[/]");
+            }
         }
 
         private static void Authentification()
         {
-            // get user input for username and password
             var username = AnsiConsole.Ask<string>("Enter your username");
             var password = AnsiConsole.Ask<string>("Enter your password");
         }
-    }
-
-    public class Menu
-    {
     }
 }
