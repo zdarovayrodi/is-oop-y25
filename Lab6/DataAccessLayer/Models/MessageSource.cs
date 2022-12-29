@@ -1,4 +1,4 @@
-namespace Lab6.DataAccessLayer.Models
+namespace Lab6.Models
 {
     public enum MessageSource
     {

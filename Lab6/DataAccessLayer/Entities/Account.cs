@@ -1,6 +1,6 @@
-using Lab6.DataAccessLayer.Models;
+using Lab6.Models;
 
-namespace Lab6.DataAccessLayer.Entities;
+namespace Lab6.Entities;
 
 public class Account
 {

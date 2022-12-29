@@ -8,8 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="BusinessLayer" />
-      <Folder Include="PresentationLayer" />
+      <PackageReference Include="Spectre.Console" Version="0.45.1-preview.0.47" />
     </ItemGroup>
 
 </Project>

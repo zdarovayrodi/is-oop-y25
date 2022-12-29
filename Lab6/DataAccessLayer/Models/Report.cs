@@ -1,6 +1,6 @@
-using Lab6.DataAccessLayer.Entities;
+using Lab6.Entities;
 
-namespace Lab6.DataAccessLayer.Models;
+namespace Lab6.Models;
 
 public class Report
 {
