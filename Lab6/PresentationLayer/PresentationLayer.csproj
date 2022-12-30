@@ -11,4 +11,8 @@
       <PackageReference Include="Spectre.Console" Version="0.45.1-preview.0.47" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj" />
+    </ItemGroup>
+
 </Project>
