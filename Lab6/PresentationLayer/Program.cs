@@ -1,4 +1,6 @@
-﻿using BusinessLayer.Handlers;
+﻿using BusinessLayer;
+using BusinessLayer.Handlers;
+using BusinessLayer;
 using BusinessLayer.Service;
 using Lab6.Entities;
 using Lab6.Models;
@@ -74,7 +76,7 @@ namespace PresentationLayer
                         AnsiConsole.MarkupLine("[green]Your reply has been sent successfully![/]");
                         break;
                     case "Create report":
-                        _reports.Add(_service.CreateReport());
+                        _reports.Add(_service.CreateReport(_account));
                         break;
                     case "Exit":
                         return;
