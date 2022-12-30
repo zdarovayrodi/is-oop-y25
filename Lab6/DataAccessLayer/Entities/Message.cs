@@ -17,5 +17,5 @@ public class Message
     public bool IsProcessed { get; set; }
     public DateTime TimeStamp { get; set; }
     public MessageSource SourceFrom { get; private set; }
-    public MessageSource ProcessedFrom { get; private set; }
+    public Account? ProcessedFrom { get; set; }
 }

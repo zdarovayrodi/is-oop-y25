@@ -5,16 +5,16 @@ namespace Lab6.Entities;
 public class Account
 {
     private string _password;
-    public Account(string name, string password, AccountStatus status)
+    public Account(string username, string password, AccountStatus status)
     {
-        Name = name;
+        Username = username;
         _password = password;
         Status = status;
     }
     
-    public string Name { get; set; }
-    public string Password => _password;
-    public string Email { get; set; }
-    public string Messenger { get; set; }
+    public string Username { get; set; }
+    public string? Email { get; set; }
+    public string? Messenger { get; set; }
     public AccountStatus Status { get; set; }
+    public bool IsCorrectPassword(string password) => _password == password;
 }
